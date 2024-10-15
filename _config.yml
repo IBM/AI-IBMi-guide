@@ -1,0 +1,17 @@
+remote_theme: carlosperate/jekyll-theme-rtd
+layout: default
+title: AI
+description: AI with IBM i
+hljs_style: github-gist
+repo_url: https://github.com/IBM/AI-IBMi-guide
+collapse_navigation: true
+include_homepage_in_sidebar: true
+include:
+  - guides/WATSONX_CONTINUE.md
+  - guides/access_db2/PYTHON.md
+  - guides/access_db2/CP4D.md
+  - guides/access_db2/ROCKET_AI_HUB.md
+  - guides/access_db2/ROCKET_CE.md
+  - guides/access_db2/WATSONX_AI.md
+  - guides/access_db2/WATSONX_DATA.md
+  - CHOOSE_A_STACK.md
