@@ -46,3 +46,18 @@ Click Test connection to verify if the connection can be created successfully
 ### Create the connection
 
 Click Create. The connection appears on the Assets page. You can edit the connection by clicking the connection name on the Assets page.
+
+### Add data assets from the connection
+
+A connected data asset is a pointer to data that is accessed through a connection to an external data source. You create a connected data asset by specifying a connection, any intermediate structures or paths, and a relational table or view, a set of partitioned data files, or a file. When you access a connected data asset, the data is dynamically retrieved from the data source. See [Add data assets from the connection](https://dataplatform.cloud.ibm.com/docs/content/wsj/manage-data/connected-data.html?context=cpdaas).
+
+To add a data asset from a connection to a project:
+
+- From the project page, click the Assets tab, and then click Import assets > Connected data.
+  <img width="1325" alt="image" src="https://github.com/user-attachments/assets/3e976acb-6b45-484e-9fed-506568470136">
+
+- Select an existing connection asset or create a new one as the source of the data.
+  <img width="1324" alt="image" src="https://github.com/user-attachments/assets/01133e7f-e1ca-43bf-868e-34e6b86901f4">
+  
+- Select the data you want. You can select multiple connected data assets from the same connection. Click Import.
+  <img width="1934" alt="image" src="https://github.com/user-attachments/assets/3f1dde64-2c49-4dce-a29b-bce172664c6f">
