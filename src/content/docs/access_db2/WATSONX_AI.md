@@ -32,7 +32,9 @@ The steps for these three different scenarios are quite similar. In this documen
 ### Enter the connection information
 
 Typically, you need to provide information like the hostname, port number, username, and password.
-Below is port number information based on the JDBC driver and SSL/TLS configuration.
+Below is port number information based on the JDBC driver and SSL/TLS configuration.  
+There are two JDBC driver options: IBM JCC driver and JT400 driver. The JT400 driver is preferred because it does not require an additional license like the JCC driver does.
+
 |JDBC Driver |Port Non-SSL|Port SSL|
 |------------|------------|--------|
 |JCC driver  |446         |448     |

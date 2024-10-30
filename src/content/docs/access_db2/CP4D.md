@@ -21,7 +21,7 @@ sidebar:
 
 ### Upload JDBC driver files
 
-JDBC driver files are required to create a connection using the IBM Db2 for i connector and there are two options: IBM JCC driver and JT400 driver. For more information, see [Db2 for i connection](https://www.ibm.com/docs/encloud-paks/cp-data/5.0.x?topic=connectors-db2-i-connection).  
+JDBC driver files are required to create a connection using the IBM Db2 for i connector and there are two options: IBM JCC driver and JT400 driver. The JT400 driver is preferred because it does not require an additional license like the JCC driver does. For more information, see [Db2 for i connection](https://www.ibm.com/docs/cloud-paks/cp-data/5.0.x?topic=connectors-db2-i-connection).  
 Not all the users have the permission to do this step. Ask the admin to upload the jar files following the instructions in this link: [Upload JDBC driver files](https://www.ibm.com/docs/en/cloud-paks/cp-data/5.0.xtopic=connectors-importing-jdbc-driver-files).
    
 ### Enter the connection information
