@@ -48,7 +48,7 @@ Configuring *Manzan* is made easy with the help of a few configuration files tha
 
 3. `dests.ini`: This file will outline your *destinations* also with its own unique ID.  Based on where you would like to send your data, you will need to specify some required properties such as credentials.
 
-    ![Destinations Configuration](../../../assets/dests-config.png)
+    ![Destination Configuration](../../../assets/dests-config.png)
 
 ## Sending Messages to Slack
 
