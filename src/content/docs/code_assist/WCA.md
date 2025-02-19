@@ -7,8 +7,8 @@ sidebar:
 
 # General updates on the IBM-backed code assistant project
 
-IBM i working on a code assistant project based on the IBM Granite series of models. 
-This project, which may end up branded as "Watson Code Assistant for IBM i,"
+IBM i working on a code assistant project for IBM i based on the IBM Granite series of models.
+The statement of direction can be found [here](https://www.ibm.com/docs/en/announcements/statement-direction-code-assistant-rpg).
 
 When there is an official announcement from IBM, this page will be updated. In the meantime,
 listed here are some reference materials that you can use for more information:
