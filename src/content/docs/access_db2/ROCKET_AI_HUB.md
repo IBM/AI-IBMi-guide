@@ -10,11 +10,16 @@ In this doc, we will cover how to access Db2 for i from Rocket AI Hub. To do thi
 
 ## Configure Db2 for i Trino Connector
 
-Before we build a pipeline that reads in data from db2 for i, let's first connect to the Db2 for i database from a Kubeflow Notebook Server using the Trino Python SDK. In order to do this, we need to configure the Trino Connector for Db2 for i.
+Before we build a pipeline that reads in data from db2 for i, let's first connect to the Db2 for i database from a Kubeflow Notebook Server using the Trino Python SDK. In order to do this, we need to configure the Trino Connector for Db2 for i.  
+Here we assume that a Trino instance is already installed in the OpenShift cluster. If you haven’t installed it yet, please refer to the instructions in this [link](https://trino.io/docs/current/installation/kubernetes.html#).
 
 ### Configure Db2 for i Connection
 
 To connect to Db2 for i, we need to configure a connection to the database. We will be using the following Connector: [trino-db2i](https://github.com/wAVeckx/trino-jtopen). Here are the steps in detail:
+
+#### Add the plugins for Trino JTOpen connector
+
+By default, the Trino instance installed using the official Trino image does not have the plugins for Trino JTOpen connector. So you need to download all the plugins from the link above and add them into the default plugin directory `/usr/lib/trino/plugin` for that Trino instance.
 
 #### Create a Catalog Properties file
 
