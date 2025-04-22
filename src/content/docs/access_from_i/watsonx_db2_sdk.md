@@ -1,11 +1,11 @@
 ---
-title: watsonx SDK for Db2
-description: watsonx SDK for Db2
+title: AI SDK for Db2
+description: AI SDK for Db2
 sidebar:
     order: 1
 ---
 
-# watsonx SDK for Db2
+
 
 To interact with watsonx using the WatsonX SDK from RPG or SQL on IBM i, follow these steps:
 

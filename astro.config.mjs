@@ -14,33 +14,45 @@ export default defineConfig({
 				{
 					label: 'AI software stacks',
 					autogenerate: { directory: 'ai_stacks' },
+					collapsed: true,
 					badge: `start here`
 				},
 				{
 					label: 'Accessing Db2 from AI',
+					collapsed: true,
 					autogenerate: { directory: 'access_db2' }
 				},
 				{
 					label: 'Streaming Db2 transactions',
+					collapsed: true,
 					autogenerate: { directory: 'stream_db2' }
 				},
 				{
 					label: 'Streaming operational data',
+					collapsed: true,
 					autogenerate: { directory: 'ops_data' }
 				},
 				{
 					label: 'Calling AI from IBM i',
+					collapsed: true,
 					autogenerate: { directory: 'access_from_i' }
 				},
 				{
 					label: 'Code assistance',
+					collapsed: true,
 					autogenerate: { directory: 'code_assist' }
 				},
 				{
 					label: 'Other Useful links (external)',
+					collapsed: true,
 					items: [
 						// Using `slug` for internal links.
-						{ link: 'http://ibm.com', label: "IBM" },
+						{ link: 'https://github.com/IBM/AI-SDK-Db2-IBMi', label: "AI SDK for Db2" },
+						{ link: 'https://github.com/ajshedivy/db2i-agents/tree/main', label: "Agentic AI examples" },
+						{ link: 'https://theprez.github.io/Manzan/#/', label: "Manzan" },
+						{ link: 'https://mapepire-ibmi.github.io/', label: "Mapepire " },
+						{ link: 'https://ibm.github.io/Tyrico-IBMi/#/', label: "Tyrico" },
+						
 					],
 				}
 			],
