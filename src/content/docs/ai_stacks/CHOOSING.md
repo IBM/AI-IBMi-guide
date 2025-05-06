@@ -26,7 +26,7 @@ support from IBM and Rocket.
 
 **Resources**
 - [Announcement](https://www.ibm.com/docs/en/announcements/rocketce-aiml-power-support?region=US)
-- [Community forum](https://community.rocketsoftware.com/forums/power?CommunityKey=c7ece6e8-5a29-4a17-a2bc-68b65f89d29f)
+- [Community forum](https://ibm.biz/rocketce-power)
 
 ## Rocket AI Hub
 
