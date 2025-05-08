@@ -38,6 +38,11 @@ export default defineConfig({
 					autogenerate: { directory: 'access_from_i' }
 				},
 				{
+					label: 'Agentic AI',
+					collapsed: true,
+					autogenerate: { directory: 'agentic' }
+				},
+				{
 					label: 'Code assistance',
 					collapsed: true,
 					autogenerate: { directory: 'code_assist' }

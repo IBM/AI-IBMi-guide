@@ -5,7 +5,7 @@ sidebar:
     order: 1
 ---
 
-![image](https://github.com/user-attachments/assets/1fbad26e-34b7-4170-ba21-e4c478451cbc)
+<img src="https://github.com/user-attachments/assets/1fbad26e-34b7-4170-ba21-e4c478451cbc" width=600>
 
 
 IBM is working on a code assistant project for IBM i based on the IBM Granite series of models.
