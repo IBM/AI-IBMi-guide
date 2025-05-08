@@ -5,7 +5,8 @@ sidebar:
     order: 1
 ---
 
-# General updates on the IBM-backed code assistant project
+![image](https://github.com/user-attachments/assets/1fbad26e-34b7-4170-ba21-e4c478451cbc)
+
 
 IBM is working on a code assistant project for IBM i based on the IBM Granite series of models.
 The statement of direction can be found [here](https://www.ibm.com/docs/en/announcements/statement-direction-code-assistant-rpg) and
