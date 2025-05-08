@@ -2,7 +2,7 @@
 title: Using watsonx with Continue
 description: Using watsonx with Continue
 sidebar:
-    order: 1
+    order: 2
 ---
 
 
