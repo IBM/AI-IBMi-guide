@@ -70,9 +70,12 @@ IBM watsonx is IBM's flagship AI suite. It can be deployed as a service or on-pr
 
 ## Native IBM i libraries
 
-Some technologies are available to run natively on IBM i, including:
-- scikit-learn (some examples available [here](https://github.com/IBM/ibmi-oss-examples/tree/master/machinelearning))
-- [chainer](https://github.com/chainer/chainer)
+Some technologies are available to run natively on IBM i. See "[Running AI Natively on IBM i](../native)"
+for more information. 
+
+**Why choose it?**
+- Enjoy the simplicity of having everything deployed on IBM i
+- Able to tolerate instances where the latest iterations are not yet available.
 
 ## Others
 
