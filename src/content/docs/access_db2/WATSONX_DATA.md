@@ -30,7 +30,7 @@ IBM watsonx.data requires a catalog for each database. This catalog will be auto
 
 <img width="1065" alt="image" src="https://github.com/user-attachments/assets/6418077d-e4ec-40fe-bbb7-2bdb9697df84">
 
-### Explorering data  
+### Exploring data  
 
 Browse the schemas and tables using the newly added catalog in the presto engine from Data Manager page.
 
