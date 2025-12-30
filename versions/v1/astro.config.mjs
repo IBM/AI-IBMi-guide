@@ -48,6 +48,32 @@ export default defineConfig({
 					autogenerate: { directory: 'code_assist' }
 				},
 				{
+					label: 'Solutions',
+					collapsed: true,
+					items: [
+						{
+							label: 'IBM',
+							collapsed: true,
+							autogenerate: { directory: 'solutions/ibm' }
+						},
+						{
+							label: 'Red Hat',
+							collapsed: true,
+							autogenerate: { directory: 'solutions/redhat' }
+						},
+						{
+							label: 'Equitus',
+							collapsed: true,
+							autogenerate: { directory: 'solutions/equitus' }
+						},
+						{
+							label: 'Wallaroo',
+							collapsed: true,
+							autogenerate: { directory: 'solutions/wallaroo' }
+						},
+					],
+				},
+				{
 					label: 'Other Useful links (external)',
 					collapsed: true,
 					items: [
