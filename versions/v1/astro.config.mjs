@@ -12,40 +12,55 @@ export default defineConfig({
 			sidebar: [
 				{ label: 'Home', link: '/' },
 				{
-					label: 'AI software stacks',
-					autogenerate: { directory: 'ai_stacks' },
+					label: 'Overview',
 					collapsed: true,
-					badge: `start here`
+					items: [
+						{
+							label: 'Why AI with IBM i?',
+							link: 'overview/why',
+							badge: `start here`
+						},
+						{
+							label: 'Choosing an AI stack',
+							link: 'overview/choosing_stack'
+						},
+						{
+							label: 'AI Hardware acceleration',
+							collapsed: true,
+							autogenerate: { directory: 'overview/ai_hardware' }
+						}
+					],
 				},
 				{
-					label: 'Accessing Db2 from AI',
+					label: 'Use cases',
 					collapsed: true,
-					autogenerate: { directory: 'access_db2' }
+					autogenerate: { directory: 'journeys' },
 				},
 				{
-					label: 'Streaming Db2 transactions',
+					label: 'Integrations',
 					collapsed: true,
-					autogenerate: { directory: 'stream_db2' }
-				},
-				{
-					label: 'Streaming operational data',
-					collapsed: true,
-					autogenerate: { directory: 'ops_data' }
-				},
-				{
-					label: 'Calling AI from IBM i',
-					collapsed: true,
-					autogenerate: { directory: 'access_from_i' }
-				},
-				{
-					label: 'Agentic AI',
-					collapsed: true,
-					autogenerate: { directory: 'agentic' }
-				},
-				{
-					label: 'Code assistance',
-					collapsed: true,
-					autogenerate: { directory: 'code_assist' }
+					items: [
+						{
+							label: 'Accessing Db2 from AI',
+							collapsed: true,
+							autogenerate: { directory: 'integrations/access_db2' }
+						},
+						{
+							label: 'Calling AI from IBM i',
+							collapsed: true,
+							autogenerate: { directory: 'integrations/access_from_i' }
+						},
+						{
+							label: 'Streaming Db2 transactions',
+							collapsed: true,
+							autogenerate: { directory: 'integrations/stream_db2' }
+						},
+						{
+							label: 'Streaming operational data',
+							collapsed: true,
+							autogenerate: { directory: 'integrations/ops_data' }
+						},
+					],
 				},
 				{
 					label: 'Solutions',
