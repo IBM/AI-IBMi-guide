@@ -7,7 +7,21 @@ sidebar:
 import { Image } from 'astro:assets';
 
 
-### LLaMa.cpp
+
+## LLaMa.cpp
+
+<details>
+<summary>Solution report card</summary>
+|      |  |  |
+| -------- | ------- | ------- |
+| Runs on IBM i?     |  ✅                      |    |
+| On-prem            |  ✅                      |    |
+| IBM Cloud          |  ✅                      |    |
+| AI capabilities    |  Large Language Models   |    |
+| Commercial support |  ❌                      |    |
+| Free to try?       |  ✅                      |    |
+| Requirements       |  [IBM i Open Source](http://ibm.biz/ibmi-rpms)  |    |
+</details>
 
 <Image  src="https://github.com/user-attachments/assets/b8942b7d-daf8-4c9d-ade4-a88d4ce0683b" width="400" height="20" alt="logo" />
 
@@ -22,6 +36,19 @@ steps documented [in this deployment guide](http://ibm.biz/llamacpp-ibmi)
 
 ## scikit-learn (SKLearn)
 
+<details>
+<summary>Solution report card</summary>
+|      |  |  |
+| -------- | ------- | ------- |
+| Runs on IBM i?     |  ✅                      |    |
+| On-prem            |  ✅                      |    |
+| IBM Cloud          |  ✅                      |    |
+| AI capabilities    |  Machine Learning<br/>Deep Learning   |    |
+| Commercial support |  ❌                      |    |
+| Free to try?       |  ✅                      |    |
+| Requirements       |  [IBM i Open Source](http://ibm.biz/ibmi-rpms)  |    |
+</details>
+
 <Image  src="https://github.com/user-attachments/assets/8415899a-c8ba-4ef7-b4f2-4ed776719ad5" width="400" height="20" alt="logo" />
 
 [scikit-learn](https://scikit-learn.org/) provides robust machine learning capabilities for Python programs. It provides support
@@ -30,15 +57,4 @@ for a number of capabilities including classification, regression, and clusterin
 The SciKit-Learn packages for Python are available in RPM form and can be installed via:
 ```bash
 /QOpenSys/pkgs/bin/yum install python39-scikit-learn
-```
-
-## chainer
-
-<Image  src="https://github.com/user-attachments/assets/7c1495ec-7a79-448c-8e09-f8eb2bdb5dd5" width="400" height="20" alt="logo" />
-
-[chainer](https://chainer.org/) provides "A Powerful, Flexible, and Intuitive Framework for Neural Networks."
-It can be installed with a simple `pip` invocation, for instance with Python 3.13:
-
-```bash
-/QOpenSys/pkgs/bin/python3.13 install chainer
 ```
