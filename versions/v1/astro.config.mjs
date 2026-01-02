@@ -6,9 +6,9 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'A comprehensive guide to using AI with IBM i',
-			social: {
-				github: 'https://github.com/IBM/AI-IBMi-guide',
-			},
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/IBM/AI-IBMi-guide' },
+			],
 			sidebar: [
 				{ label: 'Home', link: '/' },
 				{
