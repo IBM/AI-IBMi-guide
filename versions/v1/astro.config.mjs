@@ -77,14 +77,19 @@ export default defineConfig({
 							autogenerate: { directory: 'solutions/redhat' }
 						},
 						{
-							label: 'Equitus',
-							collapsed: true,
-							autogenerate: { directory: 'solutions/equitus' }
-						},
-						{
 							label: 'Wallaroo',
 							collapsed: true,
 							autogenerate: { directory: 'solutions/wallaroo' }
+						},
+						{
+							label: 'Rocketgraph',
+							collapsed: true,
+							autogenerate: { directory: 'solutions/rocketgraph' }
+						},
+						{
+							label: 'Equitus',
+							collapsed: true,
+							autogenerate: { directory: 'solutions/equitus' }
 						},
 					],
 				},
