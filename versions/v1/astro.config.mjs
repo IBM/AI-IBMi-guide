@@ -60,6 +60,11 @@ export default defineConfig({
 							collapsed: true,
 							autogenerate: { directory: 'integrations/ops_data' }
 						},
+						{
+							label: 'Accessing IBM i from IBM Cloud',
+							collapsed: true,
+							autogenerate: { directory: 'integrations/access_ibmi_ibmcloud' }
+						},
 					],
 				},
 				{
