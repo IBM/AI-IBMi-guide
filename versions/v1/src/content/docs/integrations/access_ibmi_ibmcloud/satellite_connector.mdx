@@ -1,0 +1,120 @@
+---
+title: IBM Cloud Satellite Connector
+description: Access on-premises IBM i instances using IBM Cloud Satellite Connector
+sidebar:
+    order: 1
+---
+
+## Overview of IBM Cloud Satellite Connector
+
+IBM Cloud Satellite Connector is a lightweight agent that enables secure, encrypted connectivity between your on-premises IBM i systems and IBM Cloud services. It creates a secure tunnel that allows IBM Cloud applications and services to access your on-premises resources without requiring complex VPN configurations or exposing your systems directly to the internet.
+
+For more details, see [IBM Cloud Satellite Connector](https://cloud.ibm.com/docs/satellite?topic=satellite-understand-connectors&interface=u)
+
+## Steps to Setting Up IBM Cloud Satellite Connector
+
+### Requirements
+
+**Important**: IBM i systems cannot run the Satellite Connector agent directly. The connector agent requires a Linux x86_64 system with Docker or Podman. You will need a **Linux system** that can access your IBM i system over the network.
+
+**For the Linux System:**
+- Linux x86_64 operating system (RHEL, Ubuntu, CentOS, etc.)
+- Docker or Podman installed
+- Network connectivity to IBM Cloud (outbound HTTPS on port 443)
+- Network connectivity to IBM i system (access to Db2 ports, HTTP services, etc.)
+- [Full computing requirements](https://cloud.ibm.com/docs/satellite?topic=satellite-understand-connectors&interface=ui#min-requirements)
+- [Network requirements](https://cloud.ibm.com/docs/satellite?topic=satellite-understand-connectors&interface=ui#network-requirements)
+
+**For the IBM i System:**
+- IBM i OS version 7.3 or later
+- Db2 for i configured and running
+- Network connectivity from the Linux system
+
+### Step 1: Create a Satellite Connector in IBM Cloud
+
+1. **Log in to IBM Cloud Console**
+   - Navigate to [https://cloud.ibm.com](https://cloud.ibm.com)
+   - Sign in with your IBM Cloud credentials
+
+2. **Access Satellite Connector Service**
+   - From the IBM Cloud dashboard, click the navigation menu (☰)
+   - Select **Satellite** > **Connectors**
+   - Click **Create connector**
+
+3. **Configure Connector Settings**
+   - **Name**: Enter a descriptive name for your connector (e.g., `ibmi-prod-connector`)
+   - **Resource group**: Select the appropriate resource group
+   - **Location**: Choose the IBM Cloud region closest to your on-premises location
+   - **Description**: Add a description to identify the connector's purpose
+
+4. **Review and Create**
+   - Review your configuration settings
+   - Click **Create** to provision the connector
+   - Note the **Connector ID** displayed after creation - you'll need this later
+
+### Step 2: Run the Connector Agent on Linux
+
+Now run the connector agent container on your Linux system following the instructions in the IBM Cloud documentation: [Running the connector agent](https://cloud.ibm.com/docs/satellite?topic=satellite-run-agent-locally).
+
+### Step 3: Create and Configure Endpoints
+
+After the agent is running on the Linux system, you need to create endpoints to expose your IBM i services to IBM Cloud. Following the steps in [Creating endpoints](https://cloud.ibm.com/docs/satellite?topic=satellite-connector-create-endpoints&interface=ui) to create Connector endpoints.
+
+A port number must be specified to create the endpoint. This is the port on which the destination resource listens for incoming requests. For example, if you want to connect to Db2 for i from watsonx.data, you would use port 8471 or 9471 with SSL. For other port numbers on IBM i, see [IBM i Ports](https://www.ibm.com/support/pages/tcpip-ports-required-ibm-i-access-and-related-functions).
+
+### Step 4: Verify Connectivity
+
+1. **Check endpoint status in IBM Cloud console**
+   - Navigate to your Connector
+   - Go to the **Endpoints** tab
+   - Verify that all endpoints show status as **Enabled**
+
+2. **Test connectivity from IBM Cloud**
+   - Use the cloud-side endpoint URL to test connectivity
+   - Example: Try connecting to Db2 for i using the cloud endpoint
+
+3. **Monitor agent logs**
+   ```bash
+   # View container logs
+   docker logs -f satellite-connector
+   # or
+   podman logs -f satellite-connector
+   ```
+
+### Step 5: Configure IBM Cloud Services to Use the Connector
+
+#### Example: Connecting watsonx.data to IBM i via Satellite Connector
+
+1. **In watsonx.data, add a new data source**
+   - Select **Db2 for IBM i** as the data source type
+   - For the hostname, use the Satellite Connector endpoint URL (e.g., `connector-endpoint.satellite.cloud.ibm.com`)
+   - Use the port number configured in your connector endpoint
+   - Provide your IBM i database credentials
+
+2. **Test the connection**
+   - Click **Test connection** to verify connectivity
+   - If successful, you can now query your on-premises IBM i data from watsonx.data
+
+#### Example: Connecting Cloud Pak for Data to IBM i via Satellite Connector
+
+1. **Create a new connection in Cloud Pak for Data**
+   - Navigate to your project's Assets tab
+   - Click **New asset** > **Connection**
+   - Select **IBM Db2 for i** connector
+
+2. **Configure connection details**
+   - **Hostname**: Use the Satellite Connector endpoint URL
+   - **Port**: Use the port exposed through the connector
+   - **Database**: Your IBM i database name
+   - **Username/Password**: Your IBM i credentials
+   - **SSL**: Configure if using SSL endpoint
+
+3. **Test and create the connection**
+   - Click **Test connection**
+   - Once verified, click **Create**
+
+## Additional Resources
+
+- [IBM Cloud Satellite Connector Documentation](https://cloud.ibm.com/docs/satellite?topic=satellite-connector-about)
+- [watsonx.data Data Source Configuration](https://www.ibm.com/docs/en/watsonxdata)
+- [Cloud Pak for Data Connections](https://www.ibm.com/docs/en/cloud-paks/cp-data)
