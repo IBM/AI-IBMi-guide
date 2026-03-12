@@ -17,3 +17,26 @@ sidebar:
 | Free to try?       |  ✅                      |    |
 | Requirements       |  [IBM i Open Source](http://ibm.biz/ibmi-rpms)  |    |
 </details>
+
+## What is the IBM i MCP Server?
+
+The IBM i MCP Server implements the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — an open standard that allows AI agents and LLM-powered tools to interact with external systems through a well-defined interface. By running an MCP server on IBM i, AI agents can query Db2 for i data, run SQL, inspect system objects, and take actions on the system — all through natural language, driven by an LLM.
+
+This makes IBM i a first-class participant in agentic AI workflows. An AI agent orchestrating a business process (e.g., checking inventory, placing a purchase order, summarizing open issues) can use the IBM i MCP Server as one of its tools, alongside other MCP-enabled services.
+
+## How it works
+
+The MCP server runs on IBM i in the PASE environment (via IBM i Open Source) and exposes IBM i capabilities as MCP "tools" — discrete, callable functions the LLM can invoke:
+
+- **SQL query execution** — Run SELECT statements against Db2 for i and return results as structured data
+- **System information** — Expose job, object, and system status information
+- **IFS access** — Read and write files on the Integrated File System
+- **CL command execution** — Run CL commands under controlled, authorized conditions
+
+An AI assistant (Claude, ChatGPT, Granite, etc.) connected to the MCP server can then answer questions like "What are the top 10 open sales orders by value?" by autonomously constructing and executing the appropriate SQL query.
+
+## Getting started
+
+The IBM i MCP Server requires [IBM i Open Source packages](http://ibm.biz/ibmi-rpms) (Node.js or Python runtime). Installation and configuration details are available in the project repository.
+
+See also: [Agentic AI journey](../../journeys/AGENTIC) for broader context on building agentic workflows with IBM i.

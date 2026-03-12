@@ -17,3 +17,33 @@ sidebar:
 | Free to try?       |  ✅                      |    |
 | Requirements       |                  |    |
 </details>
+
+## What is Red Hat OpenShift AI?
+
+Red Hat OpenShift AI (RHOAI) is a managed MLOps platform built on OpenShift — Red Hat's enterprise Kubernetes distribution. It provides an end-to-end environment for the full AI/ML lifecycle: data exploration, model training, experiment tracking, model serving, and monitoring — all within a governed, enterprise-grade infrastructure.
+
+RHOAI is available as a managed cloud service (on AWS, Azure, or IBM Cloud via OpenShift Dedicated) and as a self-managed deployment on any OpenShift cluster, including on IBM Power.
+
+## Key capabilities
+
+### Data Science Projects and Workbenches
+
+RHOAI provides Jupyter-based workbenches with pre-built notebook images containing popular AI/ML libraries (PyTorch, TensorFlow, scikit-learn, Hugging Face Transformers). Data scientists can connect to Db2 for i via JDBC or Mapepire from within these notebooks.
+
+### Pipelines (Kubeflow Pipelines)
+
+RHOAI integrates Kubeflow Pipelines for orchestrating multi-step ML workflows — data ingestion, preprocessing, training, evaluation, and deployment — as reproducible, versioned pipelines. IBM i Db2 data can serve as input via pipeline components that query Db2 for i.
+
+### Model Serving
+
+Trained models deploy to KServe-based model serving endpoints with auto-scaling and monitoring. These endpoints expose a REST API callable from IBM i applications.
+
+### Distributed Training
+
+For large models requiring more compute than a single server, RHOAI supports distributed training across multiple nodes using PyTorch DDP or Ray.
+
+## IBM Power support
+
+RHOAI runs on OpenShift, which supports IBM Power (`ppc64le`). This means the entire MLOps platform can run on-premises on IBM Power hardware — the same infrastructure family as IBM i — keeping data within your network and taking advantage of Power's hardware capabilities.
+
+See also: [Red Hat AI Inference Server](./RHAIIS) for standalone LLM serving without the full MLOps platform.

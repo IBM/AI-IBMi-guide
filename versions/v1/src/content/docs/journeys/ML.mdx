@@ -5,16 +5,126 @@ sidebar:
     order: 3
 ---
 
-Information coming soon about the various ways you can use Machine Learning with your IBM i data
+Machine learning (ML) is the practice of training algorithms to make predictions or decisions from data, without being explicitly programmed for each case. IBM i is an ideal starting point for ML because the data is already there — structured, reliable, and stored in Db2 for i — and the business domain context needed to frame a meaningful ML problem already exists in the people and processes that run on the platform.
 
-# Why Machine Learning? 
+## Why Machine Learning?
 
-# Basic aspects of the journey
+IBM i systems accumulate years or decades of high-quality transactional data. That history is exactly what ML models need to learn from. Common ML use cases on IBM i include:
+
+- **Fraud and anomaly detection** — Identify unusual patterns in financial transactions or order data
+- **Demand forecasting** — Predict inventory needs based on historical sales and seasonal patterns
+- **Predictive maintenance** — Anticipate equipment failures using sensor or operational data
+- **Customer segmentation** — Group customers by behavior to improve targeting and service
+- **Churn prediction** — Identify customers likely to leave before they do
+
+The key advantage: you don't have to move your data to get started. Tools like [Mapepire](https://github.com/Mapepire-IBMi/mapepire-server), [JT400](https://github.com/IBM/JTOpen), and the [Db2 for i Python SDK](https://github.com/IBM/python-itoolkit) let you query Db2 for i directly from Python ML environments.
+
+## Basic aspects of the journey
+
+A typical ML project with IBM i data follows this path:
+
+1. **Access the data** — Connect a Python ML environment to Db2 for i
+2. **Prepare the data** — Clean, transform, and engineer features
+3. **Train a model** — Use a framework like scikit-learn, XGBoost, or PyTorch
+4. **Evaluate the model** — Validate accuracy, precision, recall, and fairness
+5. **Export the model** (if needed) — Package for deployment outside the training environment
+6. **Run inference** — Score new records against the trained model
+7. **Integrate results** — Surface predictions back into IBM i applications
 
 ## Training
 
+Training happens in a Python environment — either on IBM i itself (via the [Python Ecosystem for IBM Power](../solutions/ibm/PYECO)), on an adjacent Linux/Power server, or in a cloud ML platform like [watsonx.ai](../solutions/ibm/WATSONX_AI) or [Red Hat OpenShift AI](../solutions/redhat/RHOSAI).
+
+A minimal scikit-learn example reading from Db2 for i via Mapepire:
+
+```python
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from mapepire_python.client.query import Query
+
+# Connect and fetch training data from Db2 for i
+with Query("SELECT * FROM MYLIB.ORDERS WHERE YEAR(ORDERDATE) < 2024") as q:
+    df = pd.DataFrame(q.run()["data"])
+
+# Feature engineering
+X = df[["ORDER_AMOUNT", "DAYS_SINCE_LAST_ORDER", "CUSTOMER_SEGMENT"]]
+y = df["CHURNED"]
+
+# Train/test split and model training
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X_train, y_train)
+
+print(classification_report(y_test, model.predict(X_test)))
+```
+
 ## Export the model (if needed)
+
+If training happens off-system and inference needs to run on or near IBM i, the trained model can be serialized using standard formats:
+
+- **ONNX** — Open Neural Network Exchange format, supported by many runtimes including those available on IBM i via the Python Ecosystem
+- **Pickle / joblib** — Standard Python serialization, suitable when inference also runs in Python
+- **PMML** — XML-based format for classical ML models, with broad tooling support
+
+```python
+import joblib
+joblib.dump(model, "churn_model.pkl")
+```
+
+If inference will run on IBM i directly, copy the serialized model file to IFS and load it in a Python PASE environment.
 
 ## Inferencing
 
+Once a model is trained and exported, it can score new records. Inference can run:
+
+- **On IBM i via Python PASE** — Load the model in a Python script invoked by CL, using `STRQSH` or the Db2 for i `QSYS2.QCMDEXC` SQL function
+- **On an adjacent server** — A Python microservice reads from Db2, scores, and writes results back
+- **Via a REST API** — Wrap the model in a Flask or FastAPI service and call it from RPG using the IBM i HTTP APIs
+
+```python
+# Load model and score new records
+import joblib
+import pandas as pd
+from mapepire_python.client.query import Query
+
+model = joblib.load("churn_model.pkl")
+
+with Query("SELECT * FROM MYLIB.ORDERS WHERE ORDERDATE >= CURRENT DATE - 7 DAYS") as q:
+    df = pd.DataFrame(q.run()["data"])
+
+X_new = df[["ORDER_AMOUNT", "DAYS_SINCE_LAST_ORDER", "CUSTOMER_SEGMENT"]]
+df["CHURN_SCORE"] = model.predict_proba(X_new)[:, 1]
+
+# Write predictions back to Db2 for i...
+```
+
 ## RPG integration
+
+RPG programs can invoke ML inference in several ways:
+
+**Option 1: Call a Python script via QShell**
+```rpgle
+dcl-s cmd varchar(500);
+cmd = 'STRQSH CMD(''python3 /home/myapp/score.py'')';
+QCMDEXC(cmd : %len(cmd));
+```
+
+**Option 2: Call a REST API using IBM i HTTP APIs**
+
+The IBM i `QhttpClnt` APIs or the `SYSTOOLS.HTTPGETCLOB` / `SYSTOOLS.HTTPPOSTCLOB` SQL functions can call a Python scoring service and parse the JSON response.
+
+```sql
+-- Call a REST scoring endpoint from SQL
+SELECT SYSTOOLS.HTTPPOSTCLOB(
+    'http://scoreserver:8080/predict',
+    '{"Content-Type":"application/json"}',
+    '{"order_amount": 1500, "days_since_last_order": 45, "segment": "B"}'
+) AS PREDICTION
+FROM SYSIBM.SYSDUMMY1;
+```
+
+**Option 3: Db2 for i User-Defined Functions (UDFs)**
+
+For tighter integration, a Python-based scoring function can be wrapped as an external UDF in Db2 for i, allowing it to be called directly in SQL queries — scoring every row in a result set in a single statement.

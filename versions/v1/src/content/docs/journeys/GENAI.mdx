@@ -5,4 +5,91 @@ sidebar:
     order: 5
 ---
 
-Information coming soon about the various ways you can use Generative AI with your IBM i data
+Generative AI refers to AI systems that can produce new content — text, code, summaries, answers — rather than just classifying or predicting from existing data. Large language models (LLMs) are the most prominent example. For IBM i practitioners, generative AI opens up a new class of capabilities: natural language interfaces to business data, automated code generation, document summarization, and intelligent assistants that understand your specific business domain.
+
+## What generative AI can do for IBM i
+
+### Natural language queries over Db2 for i
+
+LLMs can translate plain English questions into SQL, allowing non-technical users to query IBM i data without knowing the schema. Combined with tools like [watsonx.ai](../solutions/ibm/WATSONX_AI), this enables conversational BI directly over your existing Db2 for i tables.
+
+### RPG and CL code generation
+
+LLMs trained on or fine-tuned with IBM i code can assist developers in writing RPG, CL, and SQL. Tools like [Project Bob](../solutions/ibm/PROJECT_BOB) and Continue (via the [Developer Experience](./DEVX) journey) integrate LLM code assistance directly into the IDE.
+
+### Document and record summarization
+
+Unstructured text stored in IBM i — notes fields, text files on IFS, scanned documents — can be summarized, classified, or extracted from using generative AI APIs.
+
+### Conversational interfaces to business applications
+
+LLM-powered chatbots can be built on top of IBM i applications, allowing users to ask questions like "What's the inventory status for part number X?" and receive natural language answers backed by live Db2 for i queries.
+
+## Running LLMs on IBM i
+
+Several options exist for running generative AI close to your IBM i data:
+
+### Ollama (on IBM i via PASE)
+
+[Ollama](https://ollama.com) can run directly on IBM i in the PASE environment, hosting open-weight LLMs like Llama 3, Granite, and Mistral locally. This keeps data entirely on-premises. See [Running AI natively on IBM i](../solutions/ibm/IBMI_NATIVE) for setup details.
+
+### IBM Granite via watsonx.ai
+
+IBM's [watsonx.ai](../solutions/ibm/WATSONX_AI) hosts the Granite family of foundation models — IBM's purpose-built enterprise LLMs — alongside many open-source models. watsonx.ai is available on IBM Cloud and on-premises via IBM Cloud Pak for Data.
+
+### LLaMA.cpp on IBM Power
+
+LLaMA.cpp compiles natively on IBM i PASE, taking advantage of IBM Power's vector instruction set for efficient CPU-based inference. It supports GGUF-format quantized models from Hugging Face. See [Running AI natively on IBM i](../solutions/ibm/IBMI_NATIVE).
+
+## Calling an LLM from IBM i applications
+
+The [Db2 for i AI SDK](../integrations/access_from_i/db2_sdk) provides RPG-callable APIs for interacting with LLM endpoints — including watsonx.ai, Ollama, and any OpenAI-compatible API — directly from ILE programs, without requiring Python or any additional runtime.
+
+```rpgle
+// Example: call an LLM from RPG using the Db2 for i AI SDK
+dcl-s question varchar(500);
+dcl-s answer   varchar(5000);
+
+question = 'Summarize the top 5 overdue orders and suggest actions.';
+
+// The SDK handles the HTTP call to the LLM endpoint
+// and parses the JSON response
+callp AiChat(question : answer);
+
+dsply answer;
+```
+
+Alternatively, IBM i's built-in HTTP SQL functions work with any REST-based LLM API:
+
+```sql
+-- Call watsonx.ai directly from SQL
+SELECT JSON_VALUE(
+    SYSTOOLS.HTTPPOSTCLOB(
+        'https://us-south.ml.cloud.ibm.com/ml/v1/text/generation',
+        '{"Content-Type":"application/json","Authorization":"Bearer <token>"}',
+        '{"model_id":"ibm/granite-13b-instruct-v2","input":"Summarize overdue orders","parameters":{"max_new_tokens":200}}'
+    ),
+    '$.results[0].generated_text'
+) AS SUMMARY
+FROM SYSIBM.SYSDUMMY1;
+```
+
+## Retrieval-Augmented Generation (RAG)
+
+RAG is a pattern where the LLM is given relevant data from your own systems as context before answering a question — grounding its response in your actual business data rather than relying only on its training knowledge.
+
+For IBM i, a RAG pipeline typically works like this:
+
+1. A user asks a question
+2. Relevant records are retrieved from Db2 for i using SQL (or a vector search over embedded text)
+3. The retrieved data is included in the LLM prompt as context
+4. The LLM generates an answer grounded in that context
+
+This approach is particularly valuable for domain-specific questions where the LLM's general training knowledge is insufficient — e.g., "What is the warranty status of customer order #87234?" requires fetching the actual order record, not guessing.
+
+## Key considerations
+
+- **Data privacy** — For sensitive data, prefer on-premises LLM options (Ollama, LLaMA.cpp, watsonx.ai on Cloud Pak for Data) over cloud APIs
+- **Model selection** — IBM Granite models are optimized for enterprise use cases and available via watsonx.ai; Llama 3 and Mistral are strong open-weight alternatives
+- **Prompt engineering** — The quality of LLM output depends heavily on how questions and context are structured; invest time in prompt design
+- **Hallucination** — LLMs can produce plausible-sounding but incorrect output; for factual business queries, always ground responses with RAG or validate against source data

@@ -18,3 +18,37 @@ sidebar:
 | Free to try?       |  ✅                      |    |
 | Requirements       |  IBM Power                |    |
 </details>
+
+## What is the Python Ecosystem for IBM Power?
+
+The Python Ecosystem for IBM Power (PyEco) is IBM's supported distribution of Python and the scientific/AI Python stack — optimized and validated for IBM Power architecture. It provides the key ML and AI libraries that data scientists and developers need, packaged and tested to take advantage of IBM Power's hardware capabilities including the MMA (Matrix Math Accelerator) on Power10.
+
+PyEco runs on Linux on IBM Power (not directly on IBM i), making it the natural complement to IBM i in a hybrid on-premises AI architecture: IBM i holds the data in Db2 for i, while a Power Linux partition or server running PyEco handles the compute-intensive AI workloads.
+
+## What's included
+
+PyEco provides IBM-optimized builds of the core Python AI stack:
+
+- **PyTorch** and **TensorFlow** — Deep learning frameworks with Power-optimized kernels
+- **scikit-learn** — Classical ML algorithms
+- **XGBoost** and **LightGBM** — Gradient boosting frameworks
+- **NumPy**, **SciPy**, **pandas** — Scientific computing foundations
+- **ONNX Runtime** — Cross-platform inference engine
+- **Hugging Face Transformers** — Access to thousands of pre-trained models
+
+All packages are built for the `ppc64le` (Power little-endian) architecture and tested for compatibility with each other.
+
+## Why use PyEco instead of upstream pip packages?
+
+Standard pip packages from PyPI may not include Power-optimized builds, or may not be available for `ppc64le` at all. IBM's PyEco provides:
+
+- **Validated compatibility** — All packages are tested together
+- **Hardware optimization** — Kernels tuned for Power's vector/SIMD capabilities and MMA
+- **Commercial support** — IBM support available for production deployments
+- **Regular updates** — Packages kept current with upstream releases
+
+## Use with IBM i data
+
+PyEco on a Power Linux partition can connect to Db2 for i on an adjacent IBM i partition via JDBC (JT400), ODBC, or the [Mapepire](https://github.com/Mapepire-IBMi/mapepire-server) protocol, making it straightforward to use IBM i data as the input to ML training and inference workloads.
+
+See the [Machine Learning](../../journeys/ML) and [Deep Learning](../../journeys/DL) journey pages for examples.

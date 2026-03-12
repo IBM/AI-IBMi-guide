@@ -18,3 +18,37 @@ sidebar:
 | Free to try?       |  ✅                      |    |
 | Requirements       |                  |    |
 </details>
+
+## What is watsonx.ai?
+
+watsonx.ai is IBM's AI development platform — a managed environment for building, training, tuning, and deploying AI models. It serves as IBM's primary platform for both classical machine learning and generative AI, and is available as a fully managed service on IBM Cloud or deployed on-premises via IBM Cloud Pak for Data.
+
+For IBM i practitioners, watsonx.ai is a natural destination for AI workloads that need more compute than IBM i itself provides, while keeping data within IBM's enterprise ecosystem.
+
+## Key capabilities
+
+### Foundation models and generative AI
+
+watsonx.ai hosts IBM's **Granite** family of foundation models — purpose-built enterprise LLMs optimized for business tasks like summarization, classification, code generation, and question answering. Granite models are designed with enterprise governance in mind: IBM provides transparency about training data and indemnification for production use.
+
+Beyond Granite, watsonx.ai provides access to a curated set of open-source foundation models including Llama 3, Mistral, and others.
+
+### Prompt Lab
+
+An interactive environment for experimenting with LLM prompts without writing code. Useful for quickly prototyping natural language interfaces over IBM i data before building a full application.
+
+### AutoAI
+
+AutoAI automates the machine learning pipeline — feature engineering, algorithm selection, hyperparameter tuning — allowing users without deep ML expertise to build high-quality models from tabular data. IBM i's Db2 for i data can be imported directly as training input.
+
+### Model training and tuning
+
+watsonx.ai supports fine-tuning foundation models on domain-specific data, full model training with notebooks (Jupyter-based), and integration with popular frameworks (scikit-learn, PyTorch, XGBoost).
+
+### Deployment and serving
+
+Trained models deploy to a managed inference endpoint with a REST API, making it straightforward to call from IBM i applications using SQL HTTP functions or the [Db2 for i AI SDK](../../integrations/access_from_i/db2_sdk).
+
+## Connecting watsonx.ai to IBM i data
+
+See [Accessing Db2 from watsonx.ai](../../integrations/access_db2/WATSONX_AI) for step-by-step instructions on creating a Db2 for i connection in watsonx.ai projects.

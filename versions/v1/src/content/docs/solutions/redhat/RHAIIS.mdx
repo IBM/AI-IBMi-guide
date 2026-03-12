@@ -18,3 +18,26 @@ sidebar:
 | Free to try?       |  ✅                      |    |
 | Requirements       |                  |    |
 </details>
+
+## What is Red Hat AI Inference Server?
+
+Red Hat AI Inference Server (formerly known as vLLM-based inference) is Red Hat's enterprise-supported solution for serving large language models at production scale. It provides a high-performance, OpenAI-compatible REST API for LLM inference, backed by Red Hat's support and lifecycle commitments.
+
+Built on the open-source [vLLM](https://github.com/vllm-project/vllm) engine, Red Hat AI Inference Server is optimized for throughput and latency at scale — using techniques like continuous batching and PagedAttention to maximize GPU (or CPU/accelerator) utilization.
+
+## Why use it with IBM i?
+
+IBM i applications can call the inference server's OpenAI-compatible API using standard HTTP, SQL HTTP functions (`SYSTOOLS.HTTPPOSTCLOB`), or the [Db2 for i AI SDK](../../integrations/access_from_i/db2_sdk). This means IBM i can consume LLM capabilities from a supported, on-premises inference server without sending data to the cloud.
+
+Key benefits for IBM i scenarios:
+
+- **On-premises deployment** — Keep sensitive business data within your network
+- **OpenAI-compatible API** — Drop-in compatible with tools and code written for OpenAI; no proprietary lock-in
+- **IBM Power support** — Can run on IBM Power (Linux) infrastructure adjacent to IBM i
+- **Enterprise support** — Red Hat support contract covers the inference server
+
+## Deployment
+
+Red Hat AI Inference Server is delivered as a container image, deployable on OpenShift or standalone container runtimes. It can run on IBM Power (via `ppc64le` container images) on a Linux partition adjacent to IBM i.
+
+See also: [Red Hat OpenShift AI](./RHOSAI) for the broader MLOps platform that includes model training, pipelines, and governance alongside inference.

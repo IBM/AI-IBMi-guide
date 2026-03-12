@@ -5,4 +5,39 @@ sidebar:
     order: 1
 ---
 
-Why IBM Power©?
+## Why IBM Power for AI?
+
+When evaluating where to run AI workloads, IBM Power stands out not just as a platform that *can* run AI, but as one purpose-built for the combination of data intensity, reliability, and compute throughput that enterprise AI demands.
+
+## Hardware-accelerated AI inference
+
+IBM Power10 introduced the **Matrix Math Accelerator (MMA)** — on-chip AI acceleration built directly into every Power10 processor core. MMA enables INT8 and bfloat16 matrix operations used heavily in neural network inference, delivering significant throughput improvements without requiring a separate GPU or accelerator card.
+
+For workloads requiring even greater AI throughput, the **IBM Spyre Accelerator** is a PCIe-attached card designed specifically for large language model (LLM) inference on Power. See the [MMA](./MMA) and [Spyre](./SPYRE) pages for details.
+
+## Memory bandwidth and capacity
+
+Many AI inference workloads — especially LLMs — are memory-bandwidth bound, not compute bound. Power10's memory subsystem is designed for high bandwidth and large capacity, making it well-suited to serving large models that don't fit comfortably on GPU VRAM.
+
+## Reliability and availability
+
+IBM Power systems are renowned for their RAS (Reliability, Availability, and Serviceability) characteristics. For AI workloads embedded in production business processes — fraud detection, demand forecasting, real-time recommendations — downtime is not acceptable. Power's fault tolerance and live partition mobility features mean AI inferencing can run continuously alongside the business applications it serves.
+
+## Data locality
+
+IBM i runs on IBM Power. If your business data lives in Db2 for i on IBM i, running AI on the same Power system means inference happens where the data already is — no network hop, no data egress cost, no latency introduced by shipping data to a cloud AI endpoint. For time-sensitive decisions (fraud detection, real-time pricing), this matters.
+
+## Energy efficiency
+
+Power10 delivers strong performance-per-watt compared to x86 alternatives, particularly for the mixed integer/floating-point workloads common in ML inference. Fewer servers running more efficiently translates to lower infrastructure cost and a smaller energy footprint.
+
+## Summary
+
+| Capability | Benefit for AI |
+|---|---|
+| MMA on-chip acceleration | Fast, efficient matrix math for neural net inference |
+| Spyre accelerator | High-throughput LLM inference |
+| High memory bandwidth | Handles large model sizes without GPU constraints |
+| Enterprise RAS | AI available 24/7 in production workloads |
+| Data locality with IBM i | Zero-latency access to Db2 for i data |
+| Energy efficiency | Lower cost per inference |
