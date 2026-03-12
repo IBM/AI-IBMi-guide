@@ -5,4 +5,66 @@ sidebar:
     order: 4
 ---
 
-Information coming soon about the various ways you can use Deep Learning with your IBM i data
+Deep learning is a subset of machine learning that uses multi-layer neural networks to learn representations from data. Unlike classical ML which relies on hand-engineered features, deep learning models learn features automatically — making them powerful for unstructured data like images, audio, text, and time-series signals.
+
+## Why Deep Learning with IBM i?
+
+IBM i environments often sit at the center of business operations that generate or interact with data types where deep learning excels:
+
+- **Document processing** — Invoices, purchase orders, and forms scanned to IFS can be processed with convolutional neural networks (CNNs) or transformer-based OCR models
+- **Time-series forecasting** — LSTM and Transformer architectures can model complex temporal patterns in production, sales, or sensor data stored in Db2 for i
+- **Natural language processing** — Text from customer service records, notes fields, or emails can be classified or summarized with pre-trained language models
+- **Anomaly detection at scale** — Autoencoders can detect subtle anomalies in high-dimensional operational data that classical ML models miss
+
+## How deep learning fits into the IBM i ecosystem
+
+Deep learning training is computationally intensive and typically happens **off IBM i** — on a GPU cluster, a cloud AI platform like [watsonx.ai](../solutions/ibm/WATSONX_AI), or an on-premises server equipped with accelerators. IBM i's role is as the **data source** and the **consumer of inference results**.
+
+The workflow looks like this:
+
+1. **Extract data** from Db2 for i to the training environment (via Mapepire, JT400, or JDBC)
+2. **Train the model** using PyTorch, TensorFlow, or a higher-level framework
+3. **Export to ONNX** or another portable format
+4. **Deploy inference** on IBM i (Python PASE + ONNX Runtime), on adjacent Power infrastructure, or via a REST API
+5. **Surface results** back to RPG applications or Db2 tables
+
+## Hardware acceleration
+
+IBM Power10's **Matrix Math Accelerator (MMA)** significantly accelerates INT8 and bfloat16 matrix operations — the core computation in neural network inference. This means that even without a GPU, IBM Power can run deep learning inference efficiently for many production use cases.
+
+For higher-throughput inference workloads, the **[IBM Spyre Accelerator](../overview/ai_hardware/SPYRE)** is designed specifically for LLM and deep learning inference on Power, offering GPU-class throughput with enterprise reliability.
+
+## Example: image classification with ONNX Runtime on IBM i
+
+After training a model elsewhere and exporting to ONNX:
+
+```python
+import onnxruntime as ort
+import numpy as np
+from PIL import Image
+
+# Load the exported ONNX model (stored on IFS)
+session = ort.InferenceSession("/home/myapp/models/invoice_classifier.onnx")
+
+# Preprocess an image from IFS
+img = Image.open("/home/myapp/docs/invoice_001.png").resize((224, 224))
+input_data = np.array(img).transpose(2, 0, 1).astype(np.float32) / 255.0
+input_data = np.expand_dims(input_data, axis=0)
+
+# Run inference
+outputs = session.run(None, {"input": input_data})
+predicted_class = np.argmax(outputs[0])
+print(f"Document type: {predicted_class}")
+```
+
+ONNX Runtime is available as a Python package installable via `pip` in IBM i's PASE Python environment.
+
+## Platforms for deep learning with IBM i data
+
+| Platform | Training | Inference on IBM i | Notes |
+|---|---|---|---|
+| [Python Ecosystem for IBM Power](../solutions/ibm/PYECO) | ✅ (on Power) | ✅ | PyTorch, TensorFlow available |
+| [watsonx.ai](../solutions/ibm/WATSONX_AI) | ✅ | Via REST API | Managed training and deployment |
+| [Red Hat OpenShift AI](../solutions/redhat/RHOSAI) | ✅ | Via REST API | On-prem or cloud |
+| [Wallaroo](../solutions/wallaroo/AI_PLATFORM) | ✅ | Via REST API | MMA-optimized inference |
+| IBM i PASE (ONNX Runtime) | ❌ | ✅ | Inference only, no GPU |

@@ -18,3 +18,31 @@ sidebar:
 | Free to try?       |  ✅                      |    |
 | Requirements       |                  |    |
 </details>
+
+## What is watsonx.data?
+
+watsonx.data is IBM's data lakehouse platform — designed to consolidate data from multiple sources into a single, governed, queryable layer. It combines the flexibility of a data lake with the structure of a data warehouse, using open formats (Apache Iceberg, Parquet) and open query engines (Presto/Trino, Apache Spark) to avoid vendor lock-in.
+
+For IBM i environments, watsonx.data serves as a **data federation and analytics layer** that can query Db2 for i data alongside data from other systems — cloud object storage, relational databases, streaming platforms — using a single SQL interface.
+
+## Key capabilities
+
+### Federated query across data sources
+
+watsonx.data's Presto/Trino engine can query Db2 for i directly via the IBM Db2 for i connector, without requiring data migration. This enables cross-system analytics queries that join IBM i data with data from cloud storage, other databases, or Kafka topics.
+
+### Apache Spark for AI and data engineering
+
+A managed Spark environment within watsonx.data enables large-scale data processing, feature engineering for ML pipelines, and ETL workflows — all operating over data that includes IBM i Db2 tables.
+
+### Open table formats
+
+Data registered in watsonx.data using Apache Iceberg is accessible to any tool that understands the format — including watsonx.ai for model training, BI tools like Cognos, and external data science environments.
+
+### Data governance
+
+watsonx.data integrates with IBM's governance capabilities (via watsonx.governance) to enforce data access policies, track data lineage, and maintain a business glossary — important for regulated industries where IBM i is common.
+
+## Connecting watsonx.data to IBM i
+
+See [Accessing Db2 from watsonx.data](../../integrations/access_db2/WATSONX_DATA) for step-by-step instructions, and [IBM Cloud Satellite Connector](../../integrations/access_ibmi_ibmcloud/satellite_connector) for connecting an on-premises IBM i to watsonx.data running in IBM Cloud.
