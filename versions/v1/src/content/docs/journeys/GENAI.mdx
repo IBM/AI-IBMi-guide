@@ -11,11 +11,11 @@ Generative AI refers to AI systems that can produce new content — text, code, 
 
 ### Natural language queries over Db2 for i
 
-LLMs can translate plain English questions into SQL, allowing non-technical users to query IBM i data without knowing the schema. Combined with tools like [watsonx.ai](../solutions/ibm/WATSONX_AI), this enables conversational BI directly over your existing Db2 for i tables.
+LLMs can translate plain English questions into SQL, allowing non-technical users to query IBM i data without knowing the schema. Combined with tools like [watsonx.ai](/solutions/ibm/watsonx_ai), this enables conversational BI directly over your existing Db2 for i tables.
 
 ### RPG and CL code generation
 
-LLMs trained on or fine-tuned with IBM i code can assist developers in writing RPG, CL, and SQL. Tools like [Project Bob](../solutions/ibm/PROJECT_BOB) and Continue (via the [Developer Experience](./DEVX) journey) integrate LLM code assistance directly into the IDE.
+LLMs trained on or fine-tuned with IBM i code can assist developers in writing RPG, CL, and SQL. Tools like [Project Bob](/solutions/ibm/project_bob) and Continue (via the [Developer Experience](/journeys/devx) journey) integrate LLM code assistance directly into the IDE.
 
 ### Document and record summarization
 
@@ -31,19 +31,19 @@ Several options exist for running generative AI close to your IBM i data:
 
 ### Ollama (on IBM i via PASE)
 
-[Ollama](https://ollama.com) can run directly on IBM i in the PASE environment, hosting open-weight LLMs like Llama 3, Granite, and Mistral locally. This keeps data entirely on-premises. See [Running AI natively on IBM i](../solutions/ibm/IBMI_NATIVE) for setup details.
+[Ollama](https://ollama.com) can run directly on IBM i in the PASE environment, hosting open-weight LLMs like Llama 3, Granite, and Mistral locally. This keeps data entirely on-premises. See [Running AI natively on IBM i](/solutions/ibm/ibmi_native) for setup details.
 
 ### IBM Granite via watsonx.ai
 
-IBM's [watsonx.ai](../solutions/ibm/WATSONX_AI) hosts the Granite family of foundation models — IBM's purpose-built enterprise LLMs — alongside many open-source models. watsonx.ai is available on IBM Cloud and on-premises via IBM Cloud Pak for Data.
+IBM's [watsonx.ai](/solutions/ibm/watsonx_ai) hosts the Granite family of foundation models — IBM's purpose-built enterprise LLMs — alongside many open-source models. watsonx.ai is available on IBM Cloud and on-premises via IBM Cloud Pak for Data.
 
 ### LLaMA.cpp on IBM Power
 
-LLaMA.cpp compiles natively on IBM i PASE, taking advantage of IBM Power's vector instruction set for efficient CPU-based inference. It supports GGUF-format quantized models from Hugging Face. See [Running AI natively on IBM i](../solutions/ibm/IBMI_NATIVE).
+LLaMA.cpp compiles natively on IBM i PASE, taking advantage of IBM Power's vector instruction set for efficient CPU-based inference. It supports GGUF-format quantized models from Hugging Face. See [Running AI natively on IBM i](/solutions/ibm/ibmi_native).
 
 ## Calling an LLM from IBM i applications
 
-The [Db2 for i AI SDK](../integrations/access_from_i/db2_sdk) provides RPG-callable APIs for interacting with LLM endpoints — including watsonx.ai, Ollama, and any OpenAI-compatible API — directly from ILE programs, without requiring Python or any additional runtime.
+The [Db2 for i AI SDK](/integrations/access_from_i/db2_sdk) provides RPG-callable APIs for interacting with LLM endpoints — including watsonx.ai, Ollama, and any OpenAI-compatible API — directly from ILE programs, without requiring Python or any additional runtime.
 
 ```rpgle
 // Example: call an LLM from RPG using the Db2 for i AI SDK
