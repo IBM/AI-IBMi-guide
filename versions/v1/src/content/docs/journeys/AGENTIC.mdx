@@ -1,16 +1,187 @@
 ---
-title: Using Agentic AI
-description: Using Agentic AI
+title: Agentic AI on IBM i
+description: Using Agentic AI with IBM i - business value, deployment options, and getting started
 sidebar:
     order: 1
 ---
 
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-Thanks in part to the [Mapepire](https://mapepire-ibmi.github.io/) project, IBM i can be accessed with
-Model Context Protocol (MCP) as well as many agentic AI frameworks such as: 
-- [BeeAI ![logo](https://github.com/user-attachments/assets/4231a86e-ab21-473e-b962-5a1ca7792c4b)](https://beeai.dev/)
-- [Agno ![logo](https://github.com/user-attachments/assets/1903cc6f-d37a-4e04-8716-640186b7d77b)](https://docs.agno.com/)
-- [LangChain ![logo](https://github.com/user-attachments/assets/73eca98f-bf08-44b9-bd77-0ae05998d1a9)](http://langchain.com)
-- [CrewAI ![logo](https://github.com/user-attachments/assets/25500932-76bf-4a44-a279-29fd2ca3c349)](https://crewai.com/)
+IBM i holds decades of mission-critical business data (order history, inventory, financials, customer records) and that data is the fuel that makes agentic AI useful. Agentic AI goes beyond chat and code completion: agents can autonomously plan, reason across multiple steps, call tools, and take actions on behalf of users or other systems. Connecting that capability to IBM i's Db2 for i unlocks a new class of automation that was previously not possible.
 
-Some examples of such can be found in this [Agentic AI Examples](https://github.com/ajshedivy/db2i-agents/tree/main) repository.
+## Why Agentic AI Matters for IBM i Shops
+
+Modern AI agents are not just language models. They combine natural-language reasoning with the ability to query systems, run tools, and act on results, closing the loop between insight and action. For IBM i organizations, this creates concrete opportunities across several domains:
+
+<CardGrid>
+  <Card title="Business Process Automation" icon="rocket">
+    - Orchestrate end-to-end workflows across IBM i applications and external systems
+    - Automate fulfillment, invoicing, procurement, and scheduling without manual handoffs
+    - Delegate complex, multi-step processes to agents working under human oversight
+  </Card>
+  <Card title="Data Analytics" icon="bars">
+    - Query Db2 for i in natural language.
+    - Combine SQL queries, trend analysis, and narrative summaries in one interaction
+    - Enable business users to access insights directly from conversational queries
+  </Card>
+  <Card title="System Operations" icon="setting">
+    - Monitor job queues and detect performance anomalies automatically
+    - Analyze active jobs and surface actionable recommendations
+    - Reduce load on system administrators and catch issues earlier
+  </Card>
+  <Card title="Security" icon="shield">
+    - Continuously audit user authorities and review security events
+    - Flag anomalies in user profile activity from Db2 logs
+    - Add a proactive security layer on top of IBM i's built-in controls
+  </Card>
+  <Card title="Performance Management" icon="puzzle">
+    - Query system performance tables using natural language
+    - Access CPU, memory pools, disk I/O, and job throughput metrics conversationally
+    - Enable broader team participation in performance analysis beyond specialists
+  </Card>
+</CardGrid>
+
+---
+
+## The Foundation
+
+Two open-source projects from IBM make agentic AI on IBM i practical today.
+
+### Mapepire
+
+IBM i is a uniquely SQL-rich platform. System health, job activity, security events, user authorities, storage, performance metrics: virtually everything about the system is queryable through SQL. This means that if an AI agent can run SQL against IBM i, it can do almost anything: read business data, inspect system state, run CL commands, monitor jobs, and more.
+
+[Mapepire](https://mapepire-ibmi.github.io/) is what makes that possible for modern AI workloads. It is the server-side component that gives AI agents, MCP servers, and agent frameworks a clean, secure, and modern way to execute SQL against Db2 for i without the friction of traditional IBM i connectivity.
+
+The result: an AI agent connected through Mapepire has access to the full depth of IBM i, expressed through a single, consistent SQL interface.
+
+**Mapepire is a prerequisite for the IBM i MCP Server.** Install it first:
+
+```bash
+# On your IBM i system
+yum install mapepire-server
+yum install service-commander
+sc start mapepire
+```
+
+Full details: [Mapepire System Administrator Guide](https://mapepire-ibmi.github.io/guides/sysadmin/)
+
+### IBM i MCP Server
+
+<Aside type="tip">
+  See the dedicated [IBM i MCP Server](/solutions/ibmi-mcp-server/) page in this guide for full setup, tool collections, and client configuration.
+</Aside>
+
+The [IBM i MCP Server](https://github.com/IBM/ibmi-mcp-server) is IBM's open-source bridge between AI agents and IBM i. It implements the Model Context Protocol (MCP), the emerging open standard for connecting AI agents to tools and data sources, and exposes Db2 for i through YAML-defined SQL tools.
+
+**How it works:** AI clients connect via MCP → the server executes YAML-defined SQL tools → results stream back through Mapepire.
+
+The MCP server ships with ready-to-use tool collections covering:
+
+- **Performance monitoring**: system status, active jobs, CPU and memory metrics
+- **Security and audit**: user profiles, authorities, security events
+- **Job management**: active jobs, job queues, subsystems
+- **Storage and IFS**: disk usage, IFS objects, save files
+- **Database**: tables, indexes, constraints, statistics
+
+
+### Bring Your Own SQL
+
+The tool collections above are a starting point, not a ceiling. Any SQL query your team already runs and trusts (a custom service table view, a business report query, a favourite performance check) can be packaged as a tool by defining it in a YAML file. Once defined, that tool becomes available to any connected AI agent.
+
+This means the SQL knowledge that already lives in your team (the queries your DBAs, operators, and developers have refined over years) can be surfaced directly to agents, without rewriting anything. If your team can write it in SQL, agents can use it.
+```bash
+# Start the server with your custom tools
+npx -y @ibm/ibmi-mcp-server@latest \
+  --transport http \
+  --tools ./tools/my-tools.yaml
+```
+---
+
+## Deployment Options
+
+There are three main paths for agentic AI on IBM i, suited to different organizational needs and technical maturity levels.
+
+### Option 1: watsonx Orchestrate + IBM i MCP Server
+
+<LinkCard
+  title="watsonx Orchestrate"
+  href="https://www.ibm.com/products/watsonx-orchestrate"
+  description="IBM's enterprise agent orchestration platform: no-code to pro-code, with built-in governance."
+/>
+
+[IBM watsonx Orchestrate](https://www.ibm.com/products/watsonx-orchestrate) is IBM's enterprise-grade platform for building and deploying agents that span multiple systems. It provides a no-code to pro-code environment with built-in governance, observability, and pre-built integrations to 80+ enterprise applications including SAP, Salesforce, ServiceNow, and Workday.
+
+Connecting watsonx Orchestrate to IBM i via the MCP Server gives you enterprise orchestration on top of IBM i data. Agents built in Orchestrate can query Db2 for i, trigger workflows, and participate in multi-agent pipelines alongside agents that touch other enterprise systems, all under a governed, auditable framework.
+
+---
+
+### Option 2: IBM Bob + IBM i MCP Server
+
+<LinkCard
+  title="IBM Bob"
+  href="https://bob.ibm.com/"
+  description="IBM's agentic AI coding partner for development, modernization, and system integration."
+/>
+
+[IBM Bob](https://bob.ibm.com/) is IBM's AI-powered development partner, built as an agentic coding assistant for the full software lifecycle. Bob operates in configurable agentic modes: you describe what you want, and Bob plans and executes across your codebase. Key capabilities include:
+
+Bob connects to the IBM i MCP Server, meaning it can query your IBM i systems directly as part of its development context, looking up schema, checking system state, or helping modernize RPG with live awareness of what's in Db2.
+
+---
+
+### Option 3: Roll Your Own (OSS Frameworks)
+
+For teams who want full control over agent behavior, the IBM i MCP Server exposes a standard MCP interface compatible with any MCP-supporting agent framework. Pre-built examples are available in the [`agents/` directory](https://github.com/IBM/ibmi-mcp-server/tree/main/agents) of the MCP server repository:
+
+| Framework | Language | Strengths |
+|-----------|----------|-----------|
+| [Agno](https://docs.agno.com/) | Python | Production-ready agents with built-in observability |
+| [LangChain](https://langchain.com/) | Python | Complex workflows and tool chaining |
+| [BeeAI](https://beeai.dev/) | Python/TS | IBM's open-source multi-agent framework |
+| [CrewAI](https://crewai.com/) | Python | Multi-agent coordination and role assignment |
+
+Additional examples can be found in the community [db2i-agents repository](https://github.com/ajshedivy/db2i-agents/tree/main).
+
+**Best for:** Teams building custom agents, experimenting with multiple frameworks, or integrating IBM i into a larger open-source AI stack.
+
+---
+
+## Customer Stories
+
+### Leading Trucking Partner
+
+import { LinkCard as LC } from '@astrojs/starlight/components';
+
+<Aside type="note">
+  Full story on the [IBM i Stories](/stories/) page.
+</Aside>
+
+{/* TODO: Insert the leading trucking partner story from the IBM i stories page.
+    Include: company context, the specific IBM i / AI integration used,
+    and the concrete business outcomes (time saved, errors reduced, throughput gained, etc.) */}
+
+---
+
+## Getting Started
+
+<CardGrid>
+  <Card title="1. Install Mapepire" icon="down-caret">
+    Set up the WebSocket database server on your IBM i system.  
+    [Mapepire Install Guide →](https://mapepire-ibmi.github.io/guides/sysadmin/)
+  </Card>
+  <Card title="2. Deploy the MCP Server" icon="right-caret">
+    Clone and configure the IBM i MCP Server.  
+    [Quickstart →](https://ibm-d95bab6e.mintlify.app/quickstart)
+  </Card>
+  <Card title="3. Connect an AI Client" icon="laptop">
+    Use Claude, Claude Code, VS Code, or IBM Bob as your MCP client.  
+    [Client docs →](https://ibm-d95bab6e.mintlify.app/clients/overview)
+  </Card>
+  <Card title="4. Explore Tool Collections" icon="list-format">
+    Browse the built-in SQL tools for performance, security, jobs, and more.  
+    [Tools guide →](https://ibm-d95bab6e.mintlify.app/sql-tools/overview)
+  </Card>
+</CardGrid>
+
+For enterprise deployments, start with the [watsonx Orchestrate](/solutions/watsonx-orchestrate/) page to understand governance and orchestration options before going to production.
