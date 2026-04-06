@@ -5,85 +5,186 @@ sidebar:
     order: 2
 ---
 
+import { LinkCard } from '@astrojs/starlight/components';
 
-There are several options for deploying an AI stack to ingest IBM i data, train models,
-and deploy to production. This guide aims to summarize some of these options.
+AI on IBM i isn't about choosing a single technology stack — it's about matching the right approach to your business problem. This guide helps you identify which AI journey aligns with your organization's needs and directs you to the solutions that make it practical.
 
-## Rocket Cognitive Environment (RocketCE)
+## AI Use Cases for IBM i
 
-RocketCE offers a POWER-optimized software stack for running AI workloads.
-It has builtin exploitation of the [AI acceleration of the Power chipset](ai_hardware/mma).
-The product aims to minimize the entry barrier for AI by natively using Python
-packages on Linux LPARS, without any container platform needed. 
-Benefit from over 200 packages optimized for IBM Power10 and backed by enterprise
-support from IBM and Rocket.
+Different business challenges require different AI approaches. The following journeys represent the most common ways IBM i organizations are applying AI today.
 
-**Why choose it?**
-- Keep your entire AI lifecycle on premise
-- Exploit AI acceleration in IBM's Power hardware
-- No container platform (such as OpenShift or Kubernetes) needed
-- Evaluate at no cost
+### Agentic AI
 
-**Resources**
-- [Announcement](https://www.ibm.com/docs/en/announcements/rocketce-aiml-power-support?region=US)
-- [Community forum](https://ibm.biz/rocketce-power)
+**What it is:** AI systems that can autonomously plan, reason, and take actions across your IBM i environment — querying data, monitoring systems, and orchestrating workflows without constant human intervention.
 
-## Rocket AI Hub
+**Why it matters for your business:**
+- Automate complex, multi-step processes that currently require manual coordination
+- Enable business users to access IBM i data through natural language queries
+- Reduce operational overhead by having agents monitor system health and flag issues proactively
+- Accelerate decision-making by giving agents direct access to decades of transactional data
 
-Rocket AI hub provides a development-centric data & AI environment (data scientists,
-developers, ops, scientists, …) and get access to the most up-to-date frameworks & tools
-at no license costs on top of Red Hat OpenShift or vanilla Kubernetes. AI Hub also takes
-advantage of the [AI acceleration of the Power chipset](ai_hardware/mma).
+**Common use cases:** Business process automation, conversational data analytics, system operations monitoring, security auditing, performance management
 
-Since AI Hub runs on a container platform, it allows you to start small and scale big
-over time. Plus, it includes a suite of advanced tooling to make the AI lifecycle easier,
-such as:
-- [KServe](https://github.com/kserve/kserve), an open source framework for serving ML models. It is based on the [Open API specification](https://swagger.io/).
-- [Kubeflow](https://github.com/kubeflow), an open source platform for machine learning based on Google's TensorFlow and Keras.
-- [Kubeflow Pipelines](https://github.com/kubeflow/pipelines), an open source framework for building and deploying machine learning pipelines. It includes a suite of components to deploy, manage and monitor ML models.
-- [Katib](https://github.com/kubeflow/katib), an open source framework for automated machine learning (AutoML). 
+<LinkCard
+  title="Explore Agentic AI"
+  href="../../journeys/agentic"
+  description="Learn how to build autonomous AI agents that can query, monitor, and orchestrate workflows across your IBM i environment"
+/>
 
+---
 
-**Why choose it?**
-- Keep your entire AI lifecycle on premise
-- Exploit AI acceleration in IBM's Power hardware
-- Leverage a container platform (such as OpenShift or Kubernetes) and advanced orchestration and deployment tools
-- Evaluate at no cost
+### Developer Experience
 
-**Resources**
-- [Announcement](https://www.ibm.com/docs/en/announcements/rocket-ai-hub-power)
+**What it is:** AI-powered coding assistants that help developers write, understand, and modernize IBM i code faster — from RPG and CL to SQL and Python.
 
-## Watsonx
+**Why it matters for your business:**
+- Accelerate application development and reduce time-to-market
+- Lower the barrier for new developers learning IBM i languages
+- Speed up modernization efforts by generating boilerplate and explaining legacy code
+- Reduce technical debt by making code refactoring more accessible
 
-IBM watsonx is IBM's flagship AI suite. It can be deployed as a service or on-prem and consists of several components, including:
-- [watsonx.ai](http://watsonx.ai), an enterprise-grade AI studio where you can train, refine, and deploy AI models.
-- [watsonx.data](https://www.ibm.com/products/watsonx-data), a data lakehouse and data federation offering to power AI and analytics with all your data.
-- [watsonx.governance](https://www.ibm.com/products/watsonx-governance), a toolkit to manage risk, compliance, and the AI lifecycle
+**Common use cases:** Code generation, code explanation, modernization assistance, automated documentation
 
-**Why choose it?**
-- Flexibility to consume and produce AI models in a cloud environment if needed
-- Utilize tools designed with non-programmers in mind.
-- Many features have trial options to help you get started
+<LinkCard
+  title="Explore Developer Experience"
+  href="../../journeys/devx"
+  description="Discover AI-powered coding assistants for IBM i development and modernization"
+/>
 
-**Resources**
-- [watsonx landing page](https://www.ibm.com/watsonx)
+---
 
-## Native IBM i libraries
+### Machine Learning
 
-Some technologies are available to run natively on IBM i. See "[Running AI Natively on IBM i](../solutions/ibm/ibmi_native)"
-for more information. 
+**What it is:** Training algorithms on your historical IBM i data to make predictions and identify patterns — without being explicitly programmed for each scenario.
 
-**Why choose it?**
-- Enjoy the simplicity of having everything deployed on IBM i
-- Able to tolerate instances where the latest iterations are not yet available.
+**Why it matters for your business:**
+- Turn decades of transactional data into predictive insights
+- Identify fraud and anomalies before they become costly problems
+- Optimize inventory and reduce waste through demand forecasting
+- Improve customer retention by predicting churn before it happens
+- Reduce downtime through predictive maintenance
 
-## Others
+**Common use cases:** Fraud detection, demand forecasting, customer segmentation, churn prediction, predictive maintenance
 
-The AI stacks above are explicitly tested and certified for use with IBM i and AI workloads. However, 
-there are many other viable options, including:
-- [Open Data Hub](https://opendatahub.io/)
-- [Red Hat AI](https://www.redhat.com/en/products/ai)
-- [OpenShift AI](https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai)
-- Building your own AI solution
+<LinkCard
+  title="Explore Machine Learning"
+  href="../../journeys/ml"
+  description="Build predictive models using your historical IBM i data for forecasting and pattern detection"
+/>
 
+---
 
+### Deep Learning
+
+**What it is:** Neural networks that automatically learn features from unstructured data like images, documents, video, and time-series — without manual feature engineering.
+
+**Why it matters for your business:**
+- Process invoices, purchase orders, and forms automatically with OCR
+- Analyze video feeds for quality control, security, or operational monitoring
+- Detect subtle anomalies in high-dimensional operational data
+- Forecast complex temporal patterns in production and sales data
+- Extract insights from unstructured text in customer service records
+
+**Common use cases:** Document processing, image/video recognition, time-series forecasting, anomaly detection, natural language processing
+
+<LinkCard
+  title="Explore Deep Learning"
+  href="../../journeys/dl"
+  description="Apply neural networks to unstructured data like images, documents, and video"
+/>
+
+---
+
+### Generative AI
+
+**What it is:** AI systems that produce new content — text, code, summaries, answers — by reasoning over ambiguous inputs and synthesizing information from multiple sources.
+
+**Why it matters for your business:**
+- Give non-technical staff direct access to IBM i data through natural language queries
+- Reduce time analysts spend writing reports by automating summarization
+- Help developers work faster by generating boilerplate and explaining unfamiliar code
+- Surface insights buried in unstructured data like emails and service notes
+- Build conversational interfaces to business applications
+
+**Common use cases:** Natural language queries over Db2 for i, code generation, document summarization, conversational chatbots
+
+<LinkCard
+  title="Explore Generative AI"
+  href="../../journeys/genai"
+  description="Enable natural language interfaces and content generation for your IBM i applications"
+/>
+
+---
+
+## How to Choose
+
+Start by identifying the business problem you're trying to solve, not the technology you want to use:
+
+1. **Do you need to automate complex workflows or give users conversational access to data?** → Start with [Agentic AI](../../journeys/agentic)
+
+2. **Are you trying to speed up development or modernize legacy code?** → Start with [Developer Experience](../../journeys/devx)
+
+3. **Do you want to predict outcomes from structured transactional data?** → Start with [Machine Learning](../../journeys/ml)
+
+4. **Are you working with images, video, documents, or complex time-series data?** → Start with [Deep Learning](../../journeys/dl)
+
+5. **Do you need to generate text, summaries, or enable natural language interfaces?** → Start with [Generative AI](../../journeys/genai)
+
+Each journey page includes:
+- Detailed use case descriptions
+- Platform and deployment options
+- Integration patterns with IBM i
+- Getting started guides and examples
+
+---
+
+## Choosing Deployment Model
+
+Once you've identified your AI use case, the next decision is where to run your AI workloads. There are typically two options: self-hosted (on-premise) solutions and cloud-based SaaS offerings based on data sovereignty, compliance requirements, and operational preferences.
+
+### When to Choose On-Premise (Self-Hosted)
+
+**Best for organizations that:**
+- Must keep sensitive data on-premise due to regulatory requirements
+- Want full control over infrastructure, security policies, and data governance
+- Already have significant investment in Power hardware and want to maximize utilization
+- Need to minimize network latency between AI workloads and IBM i data
+- Prefer predictable costs over variable cloud consumption pricing
+
+**On-premise solutions include:**
+- [IBM i Native AI](../../solutions/ibm/ibmi_native) — Run AI directly in IBM i PASE
+- [Red Hat OpenShift AI](../../solutions/redhat/rhoai) — Enterprise Kubernetes platform for AI/ML on-premise
+- [Red Hat AI Inference Server](../../solutions/redhat/rhaiis) — Deploy and serve LLMs on your own infrastructure
+- [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform) — Production ML deployment optimized for Power
+- [Wallaroo AI Starter Kit](../../solutions/wallaroo/ai_starter_kit) — Managed ML deployment service
+- [Equitus Video Sentinel](../../solutions/equitus/evs) — Video/image AI running on Power hardware
+- [Equitus Knowledge Graph Neural Network](../../solutions/equitus/kgnn) — Graph-based AI on Power
+- [RocketGraph XGT](../../solutions/rocketgraph/xgt) — High-performance graph analytics on Power
+- [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco) — Run AI workloads directly on Power systems with MMA acceleration
+
+### When to Choose SaaS/Cloud
+
+**Best for organizations that:**
+- Want to start quickly without infrastructure setup
+- Prefer operational simplicity and managed services
+- Need elastic scaling for variable workloads
+- Want access to the latest models and features without manual updates
+- Are comfortable with data leaving the on-premise environment (with appropriate security controls)
+
+**SaaS/Cloud solutions include:**
+- [watsonx.ai](../../solutions/ibm/watsonx_ai) — IBM's managed AI studio for training and deploying models
+- [watsonx.data](../../solutions/ibm/watsonx_data) — Managed data lakehouse with AI integration
+- [IBM Bob](../../solutions/ibm/project_bob) — Cloud-based AI coding assistant
+
+---
+
+## Deployment Considerations
+
+Regardless of which AI journey and deployment model you choose, you'll need to consider:
+
+- **Data access:** How will your AI system connect to Db2 for i?
+- **Compute location:** Will AI workloads run on IBM i, on adjacent Power systems, or in the cloud?
+- **Hardware acceleration:** Can you leverage [MMA](../../overview/ai_hardware/mma) or [Spyre](../../overview/ai_hardware/spyre)?
+- **Governance:** What controls do you need around model deployment, data privacy, and compliance?
+- **Data sovereignty:** Where can your data legally reside and be processed?
+- **Network connectivity:** What bandwidth and latency requirements exist between IBM i and AI systems?
