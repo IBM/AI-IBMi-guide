@@ -12,29 +12,29 @@ Deep learning is a subset of machine learning that uses multi-layer neural netwo
 IBM i environments often sit at the center of business operations that generate or interact with data types where deep learning excels:
 
 - **Document processing** — Invoices, purchase orders, and forms scanned to IFS can be processed with convolutional neural networks (CNNs) or transformer-based OCR models
-- **Video and image recognition** — Camera feeds and image assets can be analyzed for defect detection, access control, or operational monitoring using CNNs and vision transformers (see [Equitus Video Sentinel](../../solutions/equitus/EVS))
 - **Time-series forecasting** — LSTM and Transformer architectures can model complex temporal patterns in production, sales, or sensor data stored in Db2 for i
 - **Natural language processing** — Text from customer service records, notes fields, or emails can be classified or summarized with pre-trained language models
 - **Anomaly detection at scale** — Autoencoders can detect subtle anomalies in high-dimensional operational data that classical ML models miss
 
 ## How deep learning fits into the IBM i ecosystem
 
-Deep learning training is computationally intensive and typically happens **off IBM i** — on a GPU cluster, a cloud AI platform like [watsonx.ai](../../solutions/ibm/watsonx_ai), or an on-premises server equipped with accelerators. IBM i most commonly acts as the **data source** and the **consumer of inference results**, but deep learning systems can also operate **entirely outside of IBM i**, integrating through REST APIs.
+Deep learning training is computationally intensive and typically happens **off IBM i** — on a GPU cluster, a cloud AI platform like [watsonx.ai](../../solutions/ibm/watsonx_ai), or an on-premises server equipped with accelerators. IBM i's role is as the **data source** and the **consumer of inference results**.
 
-Common integration patterns include:
+The workflow looks like this:
 
-- **IBM i self-contained** — Models are trained and executed in [PASE on IBM i](../solutions/ibm/ibmi_native)
-- **IBM i as data source + inference consumer** — Extract data from Db2 for i, train elsewhere, deploy inference on IBM i (Python PASE) or via REST, and surface results back to RPG or Db2 if needed.
-- **External deep learning system integrated via REST API** — The model trains and runs on a separate platform; IBM i calls it via HTTP to get predictions (e.g., [Equitus Video Sentinel](../../solutions/equitus/EVS))
-- **Fully managed cloud platform** — IBM i integrates with a hosted AI service; results are returned over a standard API with no inference infrastructure to manage
+1. **Extract data** from Db2 for i to the training environment (via Mapepire, JT400, or JDBC)
+2. **Train the model** using PyTorch, TensorFlow, or a higher-level framework
+3. **Export to ONNX** or another portable format
+4. **Deploy inference** on IBM i (Python PASE + ONNX Runtime), on adjacent Power infrastructure, or via a REST API
+5. **Surface results** back to RPG applications or Db2 tables
 
 ## Hardware acceleration
 
-IBM Power's **Matrix Math Accelerator (MMA)** significantly accelerates INT8 and bfloat16 matrix operations — the core computation in neural network inference. This means that even without a GPU, IBM Power can run deep learning inference efficiently for many production use cases. This hardware acceleration capability was added in Power 10 and enhanced in Power 11. See [MMA](../../overview/ai_hardware/mma) for more information.
+IBM Power10's **Matrix Math Accelerator (MMA)** significantly accelerates INT8 and bfloat16 matrix operations — the core computation in neural network inference. This means that even without a GPU, IBM Power can run deep learning inference efficiently for many production use cases.
 
 For higher-throughput inference workloads, the **[IBM Spyre Accelerator](../../overview/ai_hardware/spyre)** is designed specifically for LLM and deep learning inference on Power, offering GPU-class throughput with enterprise reliability.
 
-## Example: image classification with ONNX Runtime
+## Example: image classification with ONNX Runtime on IBM i
 
 After training a model elsewhere and exporting to ONNX:
 
@@ -57,15 +57,14 @@ predicted_class = np.argmax(outputs[0])
 print(f"Document type: {predicted_class}")
 ```
 
-ONNX Runtime is available as a Python package installable via `pip` on some platforms. On IBM Power, it is best to use the [Python Ecosystem for Power](../solutions/ibm/pyeco)
+ONNX Runtime is available as a Python package installable via `pip` in IBM i's PASE Python environment.
 
 ## Platforms for deep learning with IBM i data
 
 | Platform | Training | Inference on IBM i | Notes |
 |---|---|---|---|
-| [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco) | ✅ | Via REST API | PyTorch, TensorFlow available |
+| [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco) | ✅ (on Power) | ✅ | PyTorch, TensorFlow available |
 | [watsonx.ai](../../solutions/ibm/watsonx_ai) | ✅ | Via REST API | Managed training and deployment |
 | [Red Hat OpenShift AI](../../solutions/redhat/rhoai) | ✅ | Via REST API | On-prem or cloud |
 | [Wallaroo](../../solutions/wallaroo/ai_platform) | ✅ | Via REST API | MMA-optimized inference |
-| [IBM i PASE (scikit-learn)](../../solutions/ibm/ibmi_native) | ✅ | ✅ | outdated version |
-| [Equitus Video Sentinel](../../solutions/equitus/EVS) | ✅ | Via REST API | Video/image recognition, external system on Power |
+| IBM i PASE (ONNX Runtime) | ❌ | ✅ | Inference only, no GPU |
