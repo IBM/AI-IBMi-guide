@@ -12,7 +12,7 @@
   "dependencies": {
     "@astrojs/starlight": "^0.38.0",
     "ai-ibmi-guide": "file:",
-    "astro": "^5.16.6",
+    "astro": "^6.0.0",
     "astro-embed": "^0.12.0"
   }
 }
