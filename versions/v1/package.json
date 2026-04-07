@@ -10,9 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.37.1",
+    "@astrojs/starlight": "^0.38.2",
     "ai-ibmi-guide": "file:",
-    "astro": "^5.16.6",
-    "astro-embed": "^0.10.0"
+    "astro": "^6.1.4",
+    "astro-embed": "^0.12.0"
   }
 }
