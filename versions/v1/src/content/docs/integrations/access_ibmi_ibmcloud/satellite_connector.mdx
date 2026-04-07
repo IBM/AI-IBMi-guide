@@ -15,10 +15,10 @@ For more details, see [IBM Cloud Satellite Connector](https://cloud.ibm.com/docs
 
 ### Requirements
 
-**Important**: IBM i systems cannot run the Satellite Connector agent directly. The connector agent requires a Linux x86_64 system with Docker or Podman. You will need a **Linux system** that can access your IBM i system over the network.
+**Important**: IBM i systems cannot run the Satellite Connector agent directly. The connector agent requires Docker or Podman and can run on Linux, macOS, or Windows (via Podman or Docker Desktop). You will need a system that can access your IBM i system over the network.
 
-**For the Linux System:**
-- Linux x86_64 operating system (RHEL, Ubuntu, CentOS, etc.)
+**For the System Running the Agent:**
+- Linux x86_64 (RHEL, Ubuntu, CentOS, etc.), macOS, or Windows
 - Docker or Podman installed
 - Network connectivity to IBM Cloud (outbound HTTPS on port 443)
 - Network connectivity to IBM i system (access to Db2 ports, HTTP services, etc.)
@@ -28,7 +28,7 @@ For more details, see [IBM Cloud Satellite Connector](https://cloud.ibm.com/docs
 **For the IBM i System:**
 - IBM i OS version 7.3 or later
 - Db2 for i configured and running
-- Network connectivity from the Linux system
+- Network connectivity from the agent system
 
 ### Step 1: Create a Satellite Connector in IBM Cloud
 
@@ -52,13 +52,13 @@ For more details, see [IBM Cloud Satellite Connector](https://cloud.ibm.com/docs
    - Click **Create** to provision the connector
    - Note the **Connector ID** displayed after creation - you'll need this later
 
-### Step 2: Run the Connector Agent on Linux
+### Step 2: Run the Connector Agent 
 
-Now run the connector agent container on your Linux system following the instructions in the IBM Cloud documentation: [Running the connector agent](https://cloud.ibm.com/docs/satellite?topic=satellite-run-agent-locally).
+Now run the connector agent container on your system following the instructions in the IBM Cloud documentation: [Running the connector agent](https://cloud.ibm.com/docs/satellite?topic=satellite-run-agent-locally).
 
 ### Step 3: Create and Configure Endpoints
 
-After the agent is running on the Linux system, you need to create endpoints to expose your IBM i services to IBM Cloud. Following the steps in [Creating endpoints](https://cloud.ibm.com/docs/satellite?topic=satellite-connector-create-endpoints&interface=ui) to create Connector endpoints.
+After the agent is running, you need to create endpoints to expose your IBM i services to IBM Cloud. Following the steps in [Creating endpoints](https://cloud.ibm.com/docs/satellite?topic=satellite-connector-create-endpoints&interface=ui) to create Connector endpoints.
 
 A port number must be specified to create the endpoint. This is the port on which the destination resource listens for incoming requests. For example, if you want to connect to Db2 for i from watsonx.data, you would use port 8471 or 9471 with SSL. For other port numbers on IBM i, see [IBM i Ports](https://www.ibm.com/support/pages/tcpip-ports-required-ibm-i-access-and-related-functions).
 
