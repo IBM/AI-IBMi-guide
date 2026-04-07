@@ -1,0 +1,61 @@
+---
+title: "IBM Bob"
+description: IBM Bob
+sidebar:
+    order: 4
+---
+
+import { Image } from 'astro:assets';
+import { YouTube } from 'astro-embed';
+import { CardGrid, Card, LinkCard } from '@astrojs/starlight/components';
+import bobImage from '../../../../assets/bob.png';
+
+<details>
+<summary>Solution report card</summary>
+|      |  |  |
+| -------- | ------- | ------- |
+| Runs on IBM i?     |  ❌                      |    |
+| On-prem            |  ❌                      |    |
+| IBM Cloud          |  ✅                      |    |
+| AI capabilities    |  SDLC Assistance   |    |
+| Commercial support |  ✅                      |    |
+| Free to try?       |  ✅                      |    |
+| Requirements       |  Visual Studio Code (VSCode)  |    |
+</details>
+
+## What is IBM Bob?
+
+<Image src={bobImage} alt="IBM Bob logo" width={110} height={110} style="float: right;" />
+
+IBM Bob is an AI SDLC (Software Development Lifecycle) partner that augments your existing workflows and helps you work confidently with real codebases!
+
+- **Specialized Modes**: Bob adapts to your specific needs with purpose-built modes that optimize behavior for different development scenarios.
+- **Powerful Tools**: Bob comes with a comprehensive set of tools that extend capabilities beyond text generation.
+- **MCP (Model Context Protocol)**: Extend Bob's capabilities with custom tools and integrations via MCP.
+- **Agent Skills**: Provide Bob reusable instruction sets that teach Bob new workflows and specialized tasks.
+- **Bob Rules**: Customize Bob's output with your specific preferences and project requirements for coding style, documentation approach, and decision-making processes.
+- **Bob Shell**: Take Bob's capabilities beyond your editor with Bob Shell, bringing the same AI assistance to your terminal.
+
+<LinkCard
+title="IBM Bob Official Documentation"
+href="https://bob.ibm.com/"
+description="Check out the official documentation for IBM Bob for details on all features, pricing, and enterprise support."
+/>
+
+## Using Bob for IBM i Development
+
+IBM Bob has proven to excel in many domains including several IBM i development use cases. To see Bob in action, check out official [IBM Bob](https://www.youtube.com/@ibm-bob) YouTube channel which showcases many examples such as generating documentation for IBM i applications and converting fixed-form RPG code to free-form RPG.
+
+<YouTube id="https://youtu.be/ojjinfQ2HLc" posterQuality="max" />
+
+<CardGrid>
+  <LinkCard
+  title="IBM Bob YouTube Channel"
+  href="https://www.youtube.com/@ibm-bob"
+  description="Learn how to write effective GitHub Action workflows."
+  />
+  <LinkCard title="IBM i Guided Tours"
+  href="https://www.ibm.com/support/pages/ibm-i-guided-tours"
+  description="Check out past and future sessions about Bob in the IBM i Guided Tours series."
+  />
+</CardGrid>

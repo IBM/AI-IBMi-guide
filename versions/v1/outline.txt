@@ -30,7 +30,7 @@ Solutions
 		PyEco
 		watsonx.ai
 		watsonx.data
-		Project Bob
+		IBM Bob
 	Red Hat
 		RHOSAI
 		OpenShift AI
