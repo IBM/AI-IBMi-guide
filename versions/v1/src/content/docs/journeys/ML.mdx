@@ -94,11 +94,26 @@ print(classification_report(y_test, rf_model.predict(X_test)))
 
 ## Export the model (if needed)
 
-If training happens off-system and inference needs to run on or near IBM i, the trained model can be serialized using standard formats:
+Whether you need to export a model depends entirely on your inferencing strategy:
 
-- **ONNX** — Open Neural Network Exchange format, supported by many runtimes including those available on IBM i via the Python Ecosystem
+**You DON'T need to export if:**
+- Training and inference both happen in the same Python environment (e.g., both in [watsonx.ai](../../solutions/ibm/watsonx_ai), or both on IBM i PASE)
+- You're using a managed ML platform that handles deployment internally (e.g., [watsonx.ai](../../solutions/ibm/watsonx_ai) deployments, [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform), [Red Hat OpenShift AI](../../solutions/redhat/rhoai), and [Red Hat AI Inference Server](../../solutions/redhat/rhaiis))
+- The model stays in memory between training and scoring in a long-running service
+
+**You DO need to export if:**
+- Training happens in one environment (e.g., cloud ML platform, data scientist's workstation) but inference runs elsewhere (e.g., on IBM i, adjacent Linux server, or edge device)
+- You need to version and archive models for compliance, reproducibility, or rollback capability
+- Multiple applications or services need to load the same trained model
+- You're deploying to a production environment separate from your training environment
+
+When export is necessary, serialize the model using a format appropriate for your inference runtime:
+
+- **ONNX** — Open Neural Network Exchange format, supported by many runtimes including those available on IBM i via the [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco) and [Red Hat OpenShift AI](../../solutions/redhat/rhoai). Best for cross-platform deployment and when using different frameworks for training vs. inference.
 - **Pickle / joblib** — Standard Python serialization, suitable when inference also runs in Python
 - **PMML** — XML-based format for classical ML models, with broad tooling support
+
+For production-grade model serving with versioning, monitoring, and auto-scaling, consider platforms like [Red Hat OpenShift AI](../../solutions/redhat/rhoai), [Red Hat AI Inference Server](../../solutions/redhat/rhaiis), [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform), or [watsonx.ai](../../solutions/ibm/watsonx_ai) deployments, which handle model packaging and deployment automatically. 
 
 ```python
 import joblib
