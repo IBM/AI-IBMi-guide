@@ -1,0 +1,97 @@
+---
+title: watsonx Orchestrate
+description: watsonx Orchestrate
+sidebar:
+    order: 7
+---
+
+<details>
+<summary>Solution report card</summary>
+|      |  |  |
+| -------- | ------- | ------- |
+| Runs on IBM i?     |  ❌                      |    |
+| On-prem            |  ✅                      |    |
+| IBM Cloud (SaaS)   |  ✅                      |    |
+| AWS Marketplace    |  ✅                      |    |
+| AI capabilities    |  Multi-Agent Orchestration<br/>Agentic AI<br/>Workflow Automation<br/>Process Automation   |    |
+| Commercial support |  ✅                      |    |
+| Free to try?       |  ✅ (trial available)    |    |
+| Requirements       |  IBM Cloud account or on-premises watsonx deployment; IBM i connectivity via REST APIs or MCP Server |    |
+</details>
+
+## What is watsonx Orchestrate?
+
+watsonx Orchestrate is IBM's enterprise AI agent platform for creating, configuring, and deploying intelligent agents that automate business tasks across systems. It acts as an intelligent orchestration layer: agents dynamically select the right tools, invoke AI models, and execute multi-step processes — all surfaced through a unified natural language chat interface.
+
+For IBM i teams, watsonx Orchestrate provides a hybrid automation layer that can coordinate IBM i applications and Db2 for i data with cloud services, SaaS systems, and watsonx AI models — without replacing existing IBM i applications or controls.
+
+## How it works
+
+At its core, watsonx Orchestrate is a multi-agent system. A supervisor agent receives a user request, decomposes it into steps, and routes each step to the best available agent or tool. Agents can call REST APIs, query databases, run sub-agents on other frameworks, invoke AI models, or request human approvals — all within a single orchestrated flow.
+
+```
+User (chat)
+    │
+    ▼
+Supervisor Agent
+    ├─ Agent A (Salesforce)
+    ├─ Agent B (IBM i via MCP or REST)
+    ├─ Agent C (SAP)
+    └─ watsonx AI model (summarize / classify)
+```
+
+This architecture works across frameworks. Agents built with LangChain, LlamaIndex, Langflow, or any OpenAI-compatible system can be registered alongside IBM-native agents.
+
+## Building agents
+
+### No-code agent builder
+
+The visual builder lets business users create automation flows from templates or scratch using a drag-and-drop interface — tools, actions, branches, approvals, and data mappings — without writing code.
+
+### Agent Development Kit (ADK)
+
+The **ADK** is a Python library and CLI for developers who need full control. It supports:
+
+- declarative agent definitions in YAML, JSON, or Python
+- tool integration via Python functions or OpenAPI specifications
+- MCP (Model Context Protocol) server connections
+- knowledge base management
+- local development and testing before cloud deployment
+- model routing via AI Gateway, including Amazon Bedrock models
+
+### Agent Connect
+
+**Agent Connect** lets you plug agents built on *any* framework directly into watsonx Orchestrate. External agents implement a standardized OpenAI-compatible `/v1/chat` endpoint and self-register via `/v1/agents`. This enables tool sharing and streaming across heterogeneous agent systems — no vendor lock-in, no rewrites.
+
+## Agent catalog and integrations
+
+The platform ships with **100+ domain-specific agents** and **400+ prebuilt tools** covering HR, finance, supply chain, customer service, and IT operations. Prebuilt connectors reach **80+ enterprise applications** including:
+
+Salesforce · ServiceNow · SAP · Workday · Microsoft 365 · Oracle · Adobe · AWS
+
+Custom integrations are built via:
+
+- OpenAPI-defined REST tools
+- MCP server connections
+- file and document inputs for agent context
+- secure credential management per connection
+
+## Deployment options
+
+| Option | Description |
+| --- | --- |
+| **IBM Cloud SaaS** | Fully managed, multi-tenant service — fastest to get started |
+| **On-premises** | Self-hosted for data residency and compliance requirements |
+| **AWS Marketplace** | Managed SaaS on AWS infrastructure |
+
+All options support hybrid scenarios: IBM i workloads stay on-premises while orchestration is managed centrally. Governance features include centralized oversight, built-in guardrails, and automated policy enforcement.
+
+## Connecting watsonx Orchestrate to IBM i
+
+| Integration pattern | How |
+| --- | --- |
+| **REST API tools** | Expose IBM i business functions as OpenAPI-defined tools; agents call them like any other service |
+| **IBM i MCP Server** | Use the [IBM i MCP Server](./MCP_SERVER) to give agents native access to SQL, IFS, CL commands, and system objects |
+| **Agent Connect** | Register a custom IBM i automation agent built on any framework and surface it inside watsonx Orchestrate |
+
+See the [Agentic AI journey](../../../journeys/agentic) for end-to-end examples of building agentic workflows with IBM i data.
