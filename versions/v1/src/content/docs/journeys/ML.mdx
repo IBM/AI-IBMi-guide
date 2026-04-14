@@ -124,24 +124,49 @@ If inference will run on IBM i directly, copy the serialized model file to IFS a
 
 ## Inferencing
 
-Once a model is trained and exported, it can score new records. Inference can run:
+Once a model is trained and exported, it can score new records. Inference can run in several deployment locations:
 
-- **On IBM i via Python PASE** — Load the model in a Python script invoked by CL, using `STRQSH` or the Db2 for i `QSYS2.QCMDEXC` SQL function
-- **On an adjacent server** — A Python microservice reads from Db2, scores, and writes results back
-- **Via a REST API** — Wrap the model in a Flask or FastAPI service and call it from RPG using the IBM i HTTP APIs
+- **On IBM i via Python PASE** — Load the model in a Python script running directly on IBM i
+- **On an adjacent server** — Deploy the model on a Linux/Power server via the [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco) near IBM i
+- **In a managed ML platform** — Use model serving capabilities in [Red Hat OpenShift AI](../../solutions/redhat/rhoai), [Red Hat AI Inference Server](../../solutions/redhat/rhaiis), [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform), or [watsonx.ai](../../solutions/ibm/watsonx_ai)
+
+REST APIs provide a universal integration pattern that works with all inference deployment options. Whether the model runs on IBM i PASE, an adjacent server, or a managed ML platform, exposing it via HTTP makes it accessible from any IBM i application.
 
 ```python
 # Load model and score new records
 import joblib
 import pandas as pd
-from mapepire_python.client.query import Query
+from mapepire_python import connect
 
+# ============================================================================
+# LOAD TRAINED MODEL AND ENCODER
+# ============================================================================
+# Load the trained model
 model = joblib.load("churn_model.pkl")
+# Load the label encoder used during training
+le = joblib.load("label_encoder.pkl")
 
-with Query("SELECT * FROM MYLIB.ORDERS WHERE ORDERDATE >= CURRENT DATE - 7 DAYS") as q:
-    df = pd.DataFrame(q.run()["data"])
+# ============================================================================
+# FETCH NEW DATA
+# ============================================================================
+# Connect to Db2 for i via Mapepire and retrieve new records for prediction
+with connect("./config.ini") as conn:
+    with conn.execute("select * from demo.orders") as cursor:
+        results = cursor.fetchall()
+        df = pd.DataFrame(results['data'])
 
+# ============================================================================
+# PREPARE FEATURES FOR PREDICTION
+# ============================================================================
+# Select the same features used during training
 X_new = df[["ORDER_AMOUNT", "DAYS_SINCE_LAST_ORDER", "CUSTOMER_SEGMENT"]]
+
+# Encode the categorical variable using the SAVED encoder
+X_new['CUSTOMER_SEGMENT'] = le.transform(X_new['CUSTOMER_SEGMENT'])
+
+# ============================================================================
+# MAKE PREDICTIONS
+# ============================================================================
 df["CHURN_SCORE"] = model.predict_proba(X_new)[:, 1]
 
 # Write predictions back to Db2 for i...
