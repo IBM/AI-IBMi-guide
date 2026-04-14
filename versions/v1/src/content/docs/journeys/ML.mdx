@@ -176,12 +176,9 @@ df["CHURN_SCORE"] = model.predict_proba(X_new)[:, 1]
 
 RPG programs can invoke ML inference in several ways:
 
-**Option 1: Call a Python script via QShell**
-```rpgle
-dcl-s cmd varchar(500);
-cmd = 'STRQSH CMD(''python3 /home/myapp/score.py'')';
-QCMDEXC(cmd : %len(cmd));
-```
+**Option 1: Call a Python script using UNIXCMD**
+
+The [UNIXCMD project](https://www.scottklement.com/unixcmd/) provides a robust way to execute PASE commands from RPG.
 
 **Option 2: Call a REST API using IBM i HTTP APIs**
 
