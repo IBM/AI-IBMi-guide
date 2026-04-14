@@ -33,31 +33,63 @@ A typical ML project with IBM i data follows this path:
 
 ## Training
 
-Training happens in a Python environment — either on IBM i itself (via the [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco)), on an adjacent Linux/Power server, or in a cloud ML platform like [watsonx.ai](../../solutions/ibm/watsonx_ai) or [Red Hat OpenShift AI](../../solutions/redhat/rhoai).
+Training happens in a Python environment — either on IBM i itself, on an adjacent Linux/Power server(via the [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco)), or in a cloud ML platform like [watsonx.ai](../../solutions/ibm/watsonx_ai) or [Red Hat OpenShift AI](../../solutions/redhat/rhoai).
 
 A minimal scikit-learn example reading from Db2 for i via Mapepire:
 
 ```python
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
-from mapepire_python.client.query import Query
+from mapepire_python import connect
 
-# Connect and fetch training data from Db2 for i
-with Query("SELECT * FROM MYLIB.ORDERS WHERE YEAR(ORDERDATE) < 2024") as q:
-    df = pd.DataFrame(q.run()["data"])
+# Connect to Db2 for i database using Mapepire and fetch data
+# The config.ini file should contain connection details (host, user, password, etc.)
+with connect("./config.ini") as conn:
+    with conn.execute("select * from demo.orders") as cursor:
+        results = cursor.fetchall()
+        df = pd.DataFrame(results['data'])
 
-# Feature engineering
+# ============================================================================
+# FEATURE ENGINEERING & DATA PREPARATION
+# ============================================================================
+# Select features (independent variables) for the model
+# Features used: ORDER_AMOUNT, DAYS_SINCE_LAST_ORDER, CUSTOMER_SEGMENT
 X = df[["ORDER_AMOUNT", "DAYS_SINCE_LAST_ORDER", "CUSTOMER_SEGMENT"]]
-y = df["CHURNED"]
+# Select target variable
+# Binary classification: 1 = churned, 0 = not churned
+y = df['CHURNED']
 
-# Train/test split and model training
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-model = RandomForestClassifier(n_estimators=100)
-model.fit(X_train, y_train)
+# Encode categorical variable (CUSTOMER_SEGMENT) to numerical values
+# LabelEncoder converts text categories (e.g., 'Premium', 'Standard') to integers (0, 1, 2, etc.)
+le = LabelEncoder()
+X['CUSTOMER_SEGMENT'] = le.fit_transform(X['CUSTOMER_SEGMENT'])
 
-print(classification_report(y_test, model.predict(X_test)))
+# ============================================================================
+# DATA SPLITTING
+# ============================================================================
+# Split dataset into training (80%) and testing (20%) sets
+# - random_state=42: Ensures reproducible splits
+# - stratify=y: Maintains the same proportion of churned/non-churned customers in both sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+# ============================================================================
+# MODEL TRAINING
+# ============================================================================
+# Initialize Random Forest Classifier with 100 decision trees
+rf_model = RandomForestClassifier(n_estimators=100)
+
+# Train the model on the training data
+rf_model.fit(X_train, y_train)
+
+# ============================================================================
+# MODEL EVALUATION
+# ============================================================================
+# Generate predictions on the test set and display classification metrics
+# Includes precision, recall, f1-score, and support for each class
+print(classification_report(y_test, rf_model.predict(X_test)))
 ```
 
 ## Export the model (if needed)
