@@ -49,6 +49,10 @@ Standard pip packages from PyPI may not include Power-optimized builds, or may n
 
 ## Use with IBM i data
 
-PyEco on a Power Linux partition can connect to Db2 for i on an adjacent IBM i partition via JDBC (JT400), ODBC, or the [Mapepire](https://github.com/Mapepire-IBMi/mapepire-server) protocol, making it straightforward to use IBM i data as the input to ML training and inference workloads.
+PyEco on a Power Linux partition can connect to Db2 for i on an adjacent IBM i partition using several integration techniques. For direct database access, you can use JDBC (JT400), ODBC, or modern protocols like Mapepire. See the [Python programs](../../../integrations/access_db2/python) integration page for detailed information on these connection methods.
+
+Beyond direct database connections, there are several other integration techniques available for working with IBM i data:
+
+- **Event streaming with Kafka** — For event-driven architectures, you can stream database changes from Db2 for i to Kafka topics using change data capture (CDC) tools like [AIStream](../../../integrations/stream_db2/aistream), which is optimized for Power10 systems. This enables real-time data pipelines where PyEco applications can consume and process database events as they occur.
 
 See the [Machine Learning](../../../journeys/ml) and [Deep Learning](../../../journeys/dl) journey pages for examples.
