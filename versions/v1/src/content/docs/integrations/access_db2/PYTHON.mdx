@@ -6,16 +6,218 @@ sidebar:
 ---
 
 # Access Db2 from a Python application
-There are several good ways to access Db2 from a Python application, some of which are using Mapepire, and using Trino. Mapepire is the best choice when you only have a single data source, but when multiple data sources are involved, Trino may be a better option.
+
+There are several ways to access Db2 for i from Python applications, each with different strengths and use cases. This guide covers the main options: Mapepire, ibm_db, pyodbc, and Trino.
+
+## Comparison Overview
+
+| Option | Best For | Dependencies | Container-Friendly |
+|--------|----------|--------------|-------------------|
+| **Mapepire** | Cloud-native apps, single data source | None (WebSocket-based) | ✅ Excellent |
+| **ibm_db** | Full Db2 feature support, on-premise | Native C libraries | ❌ Challenging |
+| **pyodbc** | Cross-platform, ODBC standard | ODBC driver manager | ⚠️ Moderate |
+| **Trino** | Multi-source queries, analytics | Java runtime | ✅ Good |
 
 ## Mapepire
-Accessing Db2 from a Python application can be simplified using Mapepire, a database access layer built on secure web sockets. Unlike traditional Db2 drivers, Mapepire requires no native dependencies on the client machine, making it an ideal choice for cloud-native deployments across various platforms, including Red Hat UBI, Alpine Linux containers, and major cloud services like IBM Cloud, AWS, and Azure. By leveraging Mapepire, developers can establish a secure connection to Db2 for i with minimal setup, ensuring encrypted communication over a single port.
 
-To get started, install the mapepire-python package and configure connection credentials in a .ini file. Using Python's `configparser`, credentials are loaded and passed to a `DaemonServer` object, which establishes the connection. Queries can then be executed synchronously with `SQLJob` or asynchronously using `PoolJob` and `Pool` for concurrent execution. The results are returned in JSON format, including metadata about the query execution. This flexibility allows Python developers to integrate Db2 seamlessly into modern applications while maintaining security and scalability.
+Mapepire is a modern database access layer built on secure WebSockets, ideal for cloud-native deployments. It requires **no native dependencies** on the client machine, making it perfect for containers, serverless environments, and multi-cloud deployments.
 
-To learn more see the official [Mapepire documentation](https://mapepire-ibmi.github.io/).
+**When to use:** Cloud deployments, containers (Red Hat UBI, Alpine), serverless functions, or when you want to avoid native dependency management.
 
+**Installation:**
+```bash
+pip install mapepire-python
+```
+
+**Basic Example:**
+```python
+from mapepire_python import connect
+
+# Connect using credentials dictionary
+creds = {
+    "host": "SERVER",
+    "port": 8076,
+    "user": "USER",
+    "password": "PASSWORD",
+}
+
+with connect(creds) as conn:
+    with conn.execute("SELECT * FROM MYLIB.MYTABLE") as cursor:
+        result = cursor.fetchone()
+        print(result)
+```
+
+**Alternative: Using config file:**
+```python
+from mapepire_python import connect
+
+# Connect using .ini file
+with connect("./config.ini") as conn:
+    with conn.execute("SELECT * FROM MYLIB.MYTABLE") as cursor:
+        result = cursor.fetchall()
+        print(result)
+```
+
+**Learn more:** [Mapepire documentation](https://mapepire-ibmi.github.io/)
+
+## ibm_db
+
+The official IBM driver for Db2, providing full access to Db2-specific features and optimal performance for on-premise deployments.
+
+**When to use:** On-premise applications requiring full Db2 feature support, stored procedures, or advanced Db2 functionality.
+
+**Why ibm_db is not always a fit for every scenario:**
+- Requires native C library compilation during installation
+- Platform-specific build dependencies (gcc, python-dev, etc.)
+- Challenging in containerized environments (Alpine Linux incompatible)
+- Complex setup in cloud environments (AWS Lambda, Azure Functions)
+- Dependency conflicts in multi-platform deployments
+
+**Installation:**
+```bash
+pip install ibm_db
+```
+
+**Basic Example:**
+```python
+import ibm_db
+
+# Connect using connection string
+conn_str = (
+    "DATABASE=*LOCAL;"
+    "HOSTNAME=myhost.example.com;"
+    "PORT=50000;"
+    "PROTOCOL=TCPIP;"
+    "UID=myuser;"
+    "PWD=mypass;"
+)
+
+conn = ibm_db.connect(conn_str, "", "")
+
+# Execute query
+stmt = ibm_db.exec_immediate(conn, "SELECT * FROM MYLIB.MYTABLE")
+
+# Fetch results
+row = ibm_db.fetch_assoc(stmt)
+while row:
+    print(row)
+    row = ibm_db.fetch_assoc(stmt)
+
+ibm_db.close(conn)
+```
+
+## pyodbc
+
+A popular Python ODBC driver that works with any ODBC-compliant database, including Db2 for i. Provides a good balance between compatibility and ease of use.
+
+**When to use:** Cross-platform applications, when ODBC infrastructure already exists, or as an alternative to ibm_db with fewer dependency issues.
+
+**Requirements:**
+- ODBC driver manager (unixODBC on Linux, built-in on Windows)
+- IBM i Access ODBC Driver or IBM i Access Client Solutions
+
+**Installation:**
+```bash
+pip install pyodbc
+```
+
+**Basic Example:**
+```python
+import pyodbc
+
+# Connect using ODBC connection string
+conn = pyodbc.connect(
+    'DRIVER={IBM i Access ODBC Driver};'
+    'SYSTEM=myhost.example.com;'
+    'UID=myuser;'
+    'PWD=mypass;'
+)
+
+# Execute query
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM MYLIB.MYTABLE")
+
+# Fetch results
+for row in cursor:
+    print(row)
+
+cursor.close()
+conn.close()
+```
+
+**Note:** On Windows, the driver name might be `{IBM i Access ODBC Driver}` or `{Client Access ODBC Driver (32-bit)}`. On Linux, ensure unixODBC and the IBM i Access ODBC driver are installed.
 
 ## Trino
 
-Trino is a distributed SQL query engine designed for fast analytics on large datasets. It allows querying data from multiple data sources, including Db2, PostgreSQL, MySQL, and even data lakes like Amazon S3 or HDFS. If your application needs to combine data from Db2 and other sources in real-time, Trino provides an efficient way to run federated queries without the need for complex ETL processes. To learn more about Trino, check out the official [Trino Documentation](https://trino.io/). Note, that when querying Db2 on IBM i from Trino, you will need to download the [trino-jtopen connector](https://github.com/wAVeckx/trino-jtopen).
+Trino is a distributed SQL query engine designed for fast analytics across multiple data sources. Use Trino when you need to combine data from Db2 for i with other databases or data lakes in real-time federated queries.
+
+**When to use:** Multi-source analytics, data federation, combining Db2 with PostgreSQL/MySQL/S3/HDFS, or complex analytical workloads.
+
+**Requirements:**
+- Trino server deployment
+- [trino-jtopen connector](https://github.com/wAVeckx/trino-jtopen) for Db2 for i
+
+**Installation:**
+```bash
+pip install trino
+```
+
+**Basic Example:**
+```python
+from trino.dbapi import connect
+
+# Connect to Trino server
+conn = connect(
+    host='trino-server.example.com',
+    port=8080,
+    user='myuser',
+    catalog='db2',
+    schema='mylib'
+)
+
+# Execute single-source query
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM orders")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
+
+cursor.close()
+conn.close()
+```
+
+**Federated Query Example:**
+```python
+from trino.dbapi import connect
+
+# Connect to Trino server
+conn = connect(
+    host='trino-server.example.com',
+    port=8080,
+    user='myuser'
+)
+
+# Query across multiple data sources
+cursor = conn.cursor()
+cursor.execute("""
+    SELECT o.order_id, o.amount, p.product_name
+    FROM db2.mylib.orders o
+    JOIN postgres.public.products p ON o.product_id = p.id
+""")
+
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
+
+cursor.close()
+conn.close()
+```
+
+**Learn more:** [Trino Documentation](https://trino.io/)
+
+## Choosing the Right Option
+
+- **Start with Mapepire** if you're building cloud-native applications or using containers
+- **Use ibm_db** only if you need advanced Db2 features and can manage native dependencies
+- **Consider pyodbc** as a middle-ground option with better portability than ibm_db
+- **Choose Trino** when you need to query multiple data sources together
