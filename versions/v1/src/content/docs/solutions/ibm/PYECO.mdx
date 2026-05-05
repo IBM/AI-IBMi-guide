@@ -21,7 +21,7 @@ sidebar:
 
 ## What is the Python Ecosystem for IBM Power?
 
-The Python Ecosystem for IBM Power (PyEco) is IBM's supported distribution of Python and the scientific/AI Python stack — optimized and validated for IBM Power architecture. It provides the key ML and AI libraries that data scientists and developers need, packaged and tested to take advantage of IBM Power's hardware capabilities including the MMA (Matrix Math Accelerator) on Power10.
+The Python Ecosystem for IBM Power (PyEco) is IBM's supported distribution of Python and the scientific/AI Python stack — optimized and validated for IBM Power architecture. It provides the key ML and AI libraries that data scientists and developers need, packaged and tested to take advantage of IBM Power's hardware capabilities including the MMA (Matrix Math Accelerator) on Power10 (and newer).
 
 PyEco runs on Linux on IBM Power (not directly on IBM i), making it the natural complement to IBM i in a hybrid on-premises AI architecture: IBM i holds the data in Db2 for i, while a Power Linux partition or server running PyEco handles the compute-intensive AI workloads.
 
@@ -53,6 +53,6 @@ PyEco on a Power Linux partition can connect to Db2 for i on an adjacent IBM i p
 
 Beyond direct database connections, there are several other integration techniques available for working with IBM i data:
 
-- **Event streaming with Kafka** — For event-driven architectures, you can stream database changes from Db2 for i to Kafka topics using change data capture (CDC) tools like [AIStream](../../../integrations/stream_db2/aistream), which is optimized for Power10 systems. This enables real-time data pipelines where PyEco applications can consume and process database events as they occur.
+- **Event streaming with Kafka** — For event-driven architectures, you can stream database changes from Db2 for i to Kafka topics using change data capture (CDC) tools like [AIStream](../../../integrations/stream_db2/aistream), which is optimized for Power10 (and newer) systems. This enables real-time data pipelines where PyEco applications can consume and process database events as they occur.
 
 See the [Machine Learning](../../../journeys/ml) and [Deep Learning](../../../journeys/dl) journey pages for examples.
