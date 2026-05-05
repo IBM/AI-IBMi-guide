@@ -64,9 +64,12 @@ with connect("./config.ini") as conn:
 
 The official IBM driver for Db2, providing full access to Db2-specific features and optimal performance for on-premise deployments.
 
-**When to use:** On-premise applications requiring full Db2 feature support, stored procedures, or advanced Db2 functionality.
+**Important:** ibm_db requires a Db2 Connect license, unless connecting to a localhost on IBM i).
 
-**Why ibm_db is not always a fit for every scenario:**
+**When to use:** When you already have a Db2 Connect license and can benefit from the Db2-specific features offered in this driver, such as advanced stored procedures, Db2-specific data types, or enterprise features.
+
+**Why ibm_db is not always a fit:**
+- **Requires Db2 Connect license** for remote connections (not needed for localhost on IBM i)
 - Requires native C library compilation during installation
 - Platform-specific build dependencies (gcc, python-dev, etc.)
 - Challenging in containerized environments (Alpine Linux incompatible)
@@ -218,6 +221,6 @@ conn.close()
 ## Choosing the Right Option
 
 - **Start with Mapepire** if you're building cloud-native applications or using containers
-- **Use ibm_db** only if you need advanced Db2 features and can manage native dependencies
+- **Use ibm_db** only if you already have a Db2 Connect license and need advanced Db2-specific features
 - **Consider pyodbc** as a middle-ground option with better portability than ibm_db
 - **Choose Trino** when you need to query multiple data sources together
