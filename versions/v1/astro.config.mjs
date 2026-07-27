@@ -82,11 +82,6 @@ export default defineConfig({
 							autogenerate: { directory: 'solutions/redhat' }
 						},
 						{
-							label: 'Wallaroo',
-							collapsed: true,
-							autogenerate: { directory: 'solutions/wallaroo' }
-						},
-						{
 							label: 'Rocketgraph',
 							collapsed: true,
 							autogenerate: { directory: 'solutions/rocketgraph' }

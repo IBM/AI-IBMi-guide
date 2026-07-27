@@ -98,7 +98,7 @@ Whether you need to export a model depends entirely on your inferencing strategy
 
 **You DON'T need to export if:**
 - Training and inference both happen in the same Python environment (e.g., both in [watsonx.ai](../../solutions/ibm/watsonx_ai), or both on IBM i PASE)
-- You're using a managed ML platform that handles deployment internally (e.g., [watsonx.ai](../../solutions/ibm/watsonx_ai) deployments, [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform), [Red Hat OpenShift AI](../../solutions/redhat/rhoai), and [Red Hat AI Inference Server](../../solutions/redhat/rhaiis))
+- You're using a managed ML platform that handles deployment internally (e.g., [watsonx.ai](../../solutions/ibm/watsonx_ai) deployments, [Red Hat OpenShift AI](../../solutions/redhat/rhoai), and [Red Hat AI Inference Server](../../solutions/redhat/rhaiis))
 - The model stays in memory between training and scoring in a long-running service
 
 **You DO need to export if:**
@@ -113,7 +113,7 @@ When export is necessary, serialize the model using a format appropriate for you
 - **Pickle / joblib** — Standard Python serialization, suitable when inference also runs in Python
 - **PMML** — XML-based format for classical ML models, with broad tooling support
 
-For production-grade model serving with versioning, monitoring, and auto-scaling, consider platforms like [Red Hat OpenShift AI](../../solutions/redhat/rhoai), [Red Hat AI Inference Server](../../solutions/redhat/rhaiis), [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform), or [watsonx.ai](../../solutions/ibm/watsonx_ai) deployments, which handle model packaging and deployment automatically. 
+For production-grade model serving with versioning, monitoring, and auto-scaling, consider platforms like [Red Hat OpenShift AI](../../solutions/redhat/rhoai), [Red Hat AI Inference Server](../../solutions/redhat/rhaiis), or [watsonx.ai](../../solutions/ibm/watsonx_ai) deployments, which handle model packaging and deployment automatically. 
 
 ```python
 import joblib
@@ -128,7 +128,7 @@ Once a model is trained and exported, it can score new records. Inference can ru
 
 - **On IBM i via Python PASE** — Load the model in a Python script running directly on IBM i
 - **On an adjacent server** — Deploy the model on a Linux/Power server via the [Python Ecosystem for IBM Power](../../solutions/ibm/pyeco) near IBM i
-- **In a managed ML platform** — Use model serving capabilities in [Red Hat OpenShift AI](../../solutions/redhat/rhoai), [Red Hat AI Inference Server](../../solutions/redhat/rhaiis), [Wallaroo AI Platform](../../solutions/wallaroo/ai_platform), or [watsonx.ai](../../solutions/ibm/watsonx_ai)
+- **In a managed ML platform** — Use model serving capabilities in [Red Hat OpenShift AI](../../solutions/redhat/rhoai), [Red Hat AI Inference Server](../../solutions/redhat/rhaiis), or [watsonx.ai](../../solutions/ibm/watsonx_ai)
 
 REST APIs provide a universal integration pattern that works with all inference deployment options. Whether the model runs on IBM i PASE, an adjacent server, or a managed ML platform, exposing it via HTTP makes it accessible from any IBM i application.
 
