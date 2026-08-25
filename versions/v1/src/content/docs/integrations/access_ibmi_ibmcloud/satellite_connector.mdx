@@ -18,7 +18,7 @@ For more details, see [IBM Cloud Satellite Connector](https://cloud.ibm.com/docs
 **Important**: IBM i systems cannot run the Satellite Connector agent directly. The connector agent requires Docker or Podman and can run on Linux, macOS, or Windows (via Podman or Docker Desktop). You will need a system that can access your IBM i system over the network.
 
 **For the System Running the Agent:**
-- Linux x86_64 (RHEL, Ubuntu, CentOS, etc.), macOS, or Windows
+- Linux, macOS, or Windows on supported CPU architectures: x86_64 (amd64), ARM64 (arm64), PowerPC 64-bit Little Endian (ppc64le), and IBM Z (s390x)
 - Docker or Podman installed
 - Network connectivity to IBM Cloud (outbound HTTPS on port 443)
 - Network connectivity to IBM i system (access to Db2 ports, HTTP services, etc.)
