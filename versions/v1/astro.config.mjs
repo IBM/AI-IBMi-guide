@@ -27,14 +27,14 @@ export default defineConfig({
 						{
 							label: 'AI Hardware acceleration',
 							collapsed: true,
-							autogenerate: { directory: 'overview/ai_hardware' }
+							items: [{ autogenerate: { directory: 'overview/ai_hardware' } }]
 						}
 					],
 				},
 				{
 					label: 'Use cases',
 					collapsed: true,
-					autogenerate: { directory: 'journeys' },
+					items: [{ autogenerate: { directory: 'journeys' } }],
 				},
 				{
 					label: 'Integrations',
@@ -43,27 +43,27 @@ export default defineConfig({
 						{
 							label: 'Accessing Db2 from AI',
 							collapsed: true,
-							autogenerate: { directory: 'integrations/access_db2' }
+							items: [{ autogenerate: { directory: 'integrations/access_db2' } }]
 						},
 						{
 							label: 'Calling AI from IBM i',
 							collapsed: true,
-							autogenerate: { directory: 'integrations/access_from_i' }
+							items: [{ autogenerate: { directory: 'integrations/access_from_i' } }]
 						},
 						{
 							label: 'Streaming Db2 transactions',
 							collapsed: true,
-							autogenerate: { directory: 'integrations/stream_db2' }
+							items: [{ autogenerate: { directory: 'integrations/stream_db2' } }]
 						},
 						{
 							label: 'Streaming operational data',
 							collapsed: true,
-							autogenerate: { directory: 'integrations/ops_data' }
+							items: [{ autogenerate: { directory: 'integrations/ops_data' } }]
 						},
 						{
 							label: 'Accessing IBM i from IBM Cloud',
 							collapsed: true,
-							autogenerate: { directory: 'integrations/access_ibmi_ibmcloud' }
+							items: [{ autogenerate: { directory: 'integrations/access_ibmi_ibmcloud' } }]
 						},
 					],
 				},
@@ -74,22 +74,22 @@ export default defineConfig({
 						{
 							label: 'IBM',
 							collapsed: true,
-							autogenerate: { directory: 'solutions/ibm' }
+							items: [{ autogenerate: { directory: 'solutions/ibm' } }]
 						},
 						{
 							label: 'Red Hat',
 							collapsed: true,
-							autogenerate: { directory: 'solutions/redhat' }
+							items: [{ autogenerate: { directory: 'solutions/redhat' } }]
 						},
 						{
 							label: 'Rocketgraph',
 							collapsed: true,
-							autogenerate: { directory: 'solutions/rocketgraph' }
+							items: [{ autogenerate: { directory: 'solutions/rocketgraph' } }]
 						},
 						{
 							label: 'Equitus',
 							collapsed: true,
-							autogenerate: { directory: 'solutions/equitus' }
+							items: [{ autogenerate: { directory: 'solutions/equitus' } }]
 						},
 					],
 				},
