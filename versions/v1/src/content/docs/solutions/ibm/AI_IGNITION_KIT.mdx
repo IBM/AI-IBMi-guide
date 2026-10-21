@@ -28,7 +28,7 @@ The kit has two parts:
 
 - **AI Launchpad** (workload manager) — deploys, runs, and manages AI workloads, such as AI models and pre-built AI services, on IBM Power.
 - **Connectivity toolkit** (moves data both ways):
-  - **Db2 SDK** (IBM i → AI) — SQL functions and procedures that let Db2 and RPG call AI models, event streams, and messaging services.
+  - **AI SQL Toolkit for i** (IBM i → AI) — SQL functions and procedures that let Db2 and RPG call AI models, event streams, and messaging services.
   - **Mapepire** (AI → IBM i) — a secure WebSocket database server that lets AI apps in any container or cloud query Db2 for i.
 
 ## AI Launchpad
@@ -106,9 +106,9 @@ AI Launchpad v0.4.0 became generally available in October 2026. New in this rele
 
 ## Connectivity toolkit
 
-### Db2 SDK: call AI from SQL
+### AI SQL Toolkit for i: call AI from SQL
 
-The [Db2 SDK](../../../integrations/access_from_i/db2_sdk) is an open-source SDK of SQL functions and procedures that lets RPG and Db2 workloads integrate with external services:
+The [AI SQL Toolkit for i](../../../integrations/access_from_i/ai_sql_toolkit) is an open-source toolkit of SQL functions and procedures that lets RPG and Db2 workloads integrate with external services:
 
 - **AI inference** — IBM watsonx, Ollama, OpenAI-compatible endpoints, Wallaroo
 - **Events, messaging, and system** — Kafka, Slack, SMS (Twilio), PASE
@@ -116,13 +116,13 @@ The [Db2 SDK](../../../integrations/access_from_i/db2_sdk) is an open-source SDK
 Install it on IBM i:
 
 ```bash
-git clone https://github.com/IBM/AI-SDK-Db2-IBMi
-cd AI-SDK-Db2-IBMi
+git clone https://github.com/IBM/AI-SQL-Toolkit-IBMi
+cd AI-SQL-Toolkit-IBMi
 gmake     # builds library DBSDK_V1
 ```
 
 <Aside type="note" title="Before you start">
-The installing user profile needs `QIBM_DB_SECADM` function usage. The SDK is experimental and not yet intended for production use.
+The installing user profile needs `QIBM_DB_SECADM` function usage. The toolkit is experimental and not yet intended for production use.
 </Aside>
 
 #### Point Db2 at your AI endpoint
@@ -222,7 +222,7 @@ The components combine into one end-to-end flow:
 <Steps>
 
 1. **Launch** — AI Launchpad deploys and manages the workload, such as a RAG assistant.
-2. **Send** — the Db2 SDK sends IBM i data to the workload from SQL or RPG.
+2. **Send** — the AI SQL Toolkit for i sends IBM i data to the workload from SQL or RPG.
 3. **Reason** — the workload answers, classifies, or acts on the request.
 4. **Look up** — Mapepire lets the workload query Db2 for i securely.
 
@@ -242,8 +242,8 @@ The components combine into one end-to-end flow:
     description="What's new in v0.4.0. Code: github.com/IBM/project-ai-services"
   />
   <LinkCard
-    title="Db2 SDK"
-    href="https://ibm.github.io/AI-SDK-Db2-IBMi"
+    title="AI SQL Toolkit for i"
+    href="https://ibm.github.io/AI-SQL-Toolkit-IBMi"
     description="Usage and examples for each supported service."
   />
   <LinkCard
