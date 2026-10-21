@@ -1,0 +1,81 @@
+---
+title: AI SQL Toolkit for i
+description: SQL functions and procedures that let Db2 for i and RPG call AI models, event streams, and messaging services
+sidebar:
+    order: 1
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The AI SQL Toolkit for i (formerly the SDK for Db2) is an open-source set of SQL functions and procedures that makes it easy to integrate RPG and Db2 workloads with external services.
+Please see [the project documentation](https://ibm.github.io/AI-SQL-Toolkit-IBMi/) for more information.
+
+It provides SQL connectivity to a whole host of things, including:
+- [IBM watsonx.ai](http://watsonx.ai)
+- [Ollama](http://ollama.com)
+- OpenAI and OpenAI-compliant solutions, such as:
+  - [LLaMa.cpp](https://github.com/ggml-org/llama.cpp) (including [native deployment on IBM i](http://ibm.biz/llamacpp-ibmi))
+  - [Rocket CE](https://ibm.biz/rocketce-power)
+  - [vLLM](https://docs.vllm.ai/)
+  - [LM Studio](https://lmstudio.ai/)
+- [Kafka](http://kafka.apache.org)
+- [Slack](http://slack.com)
+- [Twilio (SMS)](https://www.twilio.com/en-us/messaging/channels/sms)
+- [PASE commands](https://www.ibm.com/docs/en/i/7.3.0?topic=programming-pase-i)
+
+<Aside type="caution">
+The toolkit is experimental and still in bringup state. It should not be deployed to production.
+</Aside>
+
+## Installation
+
+The installing user profile needs `QIBM_DB_SECADM` function usage authority. You also need [GNU Make](https://ibmi-oss-docs.readthedocs.io/en/latest/yum/README.html) (`gmake`), which is available via yum.
+
+```bash
+git clone https://github.com/IBM/AI-SQL-Toolkit-IBMi
+cd AI-SQL-Toolkit-IBMi
+gmake     # builds library DBSDK_V1
+```
+
+## Configuration
+
+Connection settings are stored with a pair of procedures for each setting: `...forjob` procedures apply to the current job only, and `...forme` procedures persist the setting for your user profile across jobs. For example, to point the toolkit at an Ollama server:
+
+```sql
+CALL dbsdk_v1.ollama_setserverforjob('ollama.example.com');
+CALL dbsdk_v1.ollama_setportforjob(11434);
+CALL dbsdk_v1.ollama_setmodelforjob('granite3.3');
+```
+
+For watsonx.ai, set your API key and project ID, then authenticate:
+
+```sql
+CALL dbsdk_v1.wx_setapikeyforjob('<api key>');
+CALL dbsdk_v1.wx_setprojectidforjob('<project id>');
+VALUES dbsdk_v1.wx_authenticate();   -- returns Y on success
+```
+
+## Examples
+
+Generate text with watsonx.ai, optionally choosing a model and tuning parameters:
+
+```sql
+VALUES dbsdk_v1.wx_generate('Hello world');
+VALUES dbsdk_v1.wx_generate('Hello world', model_id => 'ibm/granite-3-8b-instruct');
+```
+
+Run a PASE command and get its standard output back as a result set:
+
+```sql
+VALUES dbsdk_v1.pase_call('ls -b');
+```
+
+See the [project documentation](https://ibm.github.io/AI-SQL-Toolkit-IBMi/) for usage and examples for each supported service.
+
+## Interacting with the toolkit from RPG
+
+If you need to call toolkit functions from RPG, you can use embedded SQL within your RPGLE program:
+```
+EXEC SQL
+    VALUES dbsdk_v1.wx_generate('Hello world') INTO :response;
+```

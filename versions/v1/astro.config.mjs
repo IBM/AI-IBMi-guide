@@ -98,7 +98,7 @@ export default defineConfig({
 					collapsed: true,
 					items: [
 						// Using `slug` for internal links.
-						{ link: 'https://github.com/IBM/AI-SDK-Db2-IBMi', label: "AI SDK for Db2" },
+						{ link: 'https://github.com/IBM/AI-SQL-Toolkit-IBMi', label: "AI SQL Toolkit for i" },
 						{ link: 'https://github.com/ajshedivy/db2i-agents/tree/main', label: "Agentic AI examples" },
 						{ link: 'https://theprez.github.io/Manzan/#/', label: "Manzan" },
 						{ link: 'https://mapepire-ibmi.github.io/', label: "Mapepire " },
