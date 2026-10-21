@@ -1,0 +1,254 @@
+---
+title: AI Ignition Kit for IBM i
+description: AI Ignition Kit for IBM i
+sidebar:
+    order: 9
+---
+
+import { CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<details>
+<summary>Solution report card</summary>
+|      |  |  |
+| -------- | ------- | ------- |
+| Runs on IBM i?     |  Partially (connectivity components run on IBM i; AI workloads run on Linux on IBM Power) |    |
+| On-prem            |  ✅                      |    |
+| IBM Cloud          |  ✅ (Power Virtual Server) |    |
+| AI capabilities    |  Generative AI, RAG, document digitization, summarization, similarity search, entity extraction, translation |    |
+| Commercial support |  Varies by component     |    |
+| Free to try?       |  ✅                      |    |
+| Requirements       |  RHEL 9.6+ (ppc64le) with Podman, or Red Hat OpenShift on IBM Power; [IBM i Open Source](http://ibm.biz/ibmi-rpms) |    |
+</details>
+
+## What is the AI Ignition Kit?
+
+Your business data already lives on IBM i. The fastest path to useful AI is to bring AI to the data. The AI Ignition Kit is a set of components that work together to do exactly that: deploy AI services alongside your IBM i partitions and move data in both directions between IBM i and those services.
+
+The kit has two parts:
+
+- **AI Launchpad** (workload manager) — deploys, runs, and manages AI workloads, such as AI models and pre-built AI services, on IBM Power.
+- **Connectivity toolkit** (moves data both ways):
+  - **Db2 SDK** (IBM i → AI) — SQL functions and procedures that let Db2 and RPG call AI models, event streams, and messaging services.
+  - **Mapepire** (AI → IBM i) — a secure WebSocket database server that lets AI apps in any container or cloud query Db2 for i.
+
+## AI Launchpad
+
+AI Launchpad deploys, runs, and manages AI workloads on IBM Power. It provides:
+
+- **Pre-built services** — production-ready AI services, from RAG chat to document digitization.
+- **One control plane** — a catalog UI, CLI, and APIs to deploy, monitor, and remove apps.
+- **Any inference** — plug in IBM Spyre, Red Hat AI Inference Server, or any OpenAI-compatible endpoint.
+
+### Architecture
+
+| Layer | Components |
+| ----- | ---------- |
+| **Interfaces** | Catalog UI (one-click deploy), `ai-services` CLI (bootstrap, catalog, apps), Catalog API (automation and bring-your-own-service), MCP sidecar (tools for AI agents) |
+| **AI services** (containers) | Digital assistant, Digitize, Summarize, Similarity search, Entity extraction, Translation |
+| **Data layer** | Vector database (OpenSearch), S3 object storage, SSH/SFTP file systems |
+| **Inference endpoints** | [IBM Spyre](../../../overview/ai_hardware/spyre) accelerator for Power, [Red Hat AI Inference Server](../../redhat/rhaiis), OpenAI/watsonx.ai-compatible APIs (on-prem or cloud) |
+
+AI Launchpad runs on RHEL 9.6+ LPARs with Podman, or on Red Hat OpenShift on IBM Power. Remote workers connect over outbound mTLS.
+
+### Pre-built AI services
+
+| Service | What it does |
+| ------- | ------------ |
+| **Digital assistant** | Conversational RAG over your documents |
+| **Digitize** | Ingest documents, with duplicate detection |
+| **Summarize** | Condense long text into key points |
+| **Similarity search** | Semantic search across your content |
+| **Entity extraction** | Extract structured fields: sync, async, or batch |
+| **Translation** | Sync and batch, English and German first |
+
+### Up and running
+
+Three CLI steps take an IBM Power LPAR (RHEL 9.6+ on ppc64le, with Podman or OpenShift) to a running AI app:
+
+<Steps>
+
+1. **Bootstrap the LPAR.** Validates the OS and IBM Spyre configuration.
+
+    ```bash
+    ai-services bootstrap --runtime podman
+    ```
+
+2. **Configure the catalog.** Stands up the catalog service and UI.
+
+    ```bash
+    ai-services catalog configure --runtime podman
+    ```
+
+3. **Deploy applications.** Use one click in the catalog UI, or the CLI.
+
+    ```bash
+    ai-services application --help
+    ```
+
+</Steps>
+
+Once the catalog is configured, an AI service can be deployed from the catalog with one click, on premises or on Power Virtual Server.
+
+<Aside type="caution" title="Upgrading from v0.3.x?">
+Back up the OpenSearch vector database and Digitize data first, then follow the v0.3.x → v0.4.0 migration guide in the [AI Launchpad documentation](https://ibm.biz/aiservices).
+</Aside>
+
+### What's new in v0.4.0
+
+AI Launchpad v0.4.0 became generally available in October 2026. New in this release:
+
+- **Remote workers** — deploy to remote Power LPARs and OpenShift clusters from one catalog host over mTLS.
+- **Data connectors** — sync from S3 object storage and SSH/SFTP file systems.
+- **Bring your own service** — onboard custom models and services as bundles via the API and CLI.
+- **MCP sidecar** — expose chat, digitize, summarize, and search to AI agents.
+- **Granite 4.1 8B** on CPU and IBM Spyre.
+- **Mid-deployment cancellation.**
+
+## Connectivity toolkit
+
+### Db2 SDK: call AI from SQL
+
+The [Db2 SDK](../../../integrations/access_from_i/db2_sdk) is an open-source SDK of SQL functions and procedures that lets RPG and Db2 workloads integrate with external services:
+
+- **AI inference** — IBM watsonx, Ollama, OpenAI-compatible endpoints, Wallaroo
+- **Events, messaging, and system** — Kafka, Slack, SMS (Twilio), PASE
+
+Install it on IBM i:
+
+```bash
+git clone https://github.com/IBM/AI-SDK-Db2-IBMi
+cd AI-SDK-Db2-IBMi
+gmake     # builds library DBSDK_V1
+```
+
+<Aside type="note" title="Before you start">
+The installing user profile needs `QIBM_DB_SECADM` function usage. The SDK is experimental and not yet intended for production use.
+</Aside>
+
+#### Point Db2 at your AI endpoint
+
+Because AI Launchpad services and inference servers expose OpenAI-compatible APIs, you can point Db2 at them directly. First, configure the endpoint for your job:
+
+```sql
+-- Configure the OpenAI-compatible endpoint for this job
+CALL dbsdk_v1.openai_compatible_setserverforjob('ai.example.com');
+CALL dbsdk_v1.openai_compatible_setportforjob(443);
+CALL dbsdk_v1.openai_compatible_setprotocolforjob('https');
+CALL dbsdk_v1.openai_compatible_setmodelforjob('granite');
+```
+
+Use the `...forme` procedures instead to persist settings for your user profile. Add an API key with `...setapikeyforjob`.
+
+Then call the model from a query:
+
+```sql
+-- Classify customer feedback where it lives
+SELECT f.id, f.comment,
+       dbsdk_v1.openai_compatible_chat_generate(
+         'Positive, Neutral or Negative? ' || f.comment,
+         '{"max_tokens": 10, "temperature": 0.1}') AS sentiment
+  FROM mylib.feedback f;
+```
+
+`chat_generate` posts to `/chat/completions` and sends only the options you set, so it works with strict endpoints.
+
+#### Patterns you can ship from SQL
+
+- **Enrich** — classify, tag, or score rows inside a `SELECT`, right where the data lives.
+- **Summarize** — roll data up with `LISTAGG`, then ask a model for insights on the result.
+- **Persist and notify** — `INSERT` generated content into tables; push events to Kafka, Slack, or SMS.
+
+### Mapepire: AI apps meet Db2 for i
+
+[Mapepire](https://mapepire-ibmi.github.io/) (pronounced "MAH-pup-ee") is a database access layer for Db2 for i built on secure WebSockets. It offers:
+
+- A consistent client SDK across languages
+- No native drivers on the client
+- One port, with data always encrypted
+- Support for containers, notebooks, and clouds
+
+| | JDBC | ODBC | Mapepire |
+| --- | :---: | :---: | :---: |
+| Needs only a single port | | | ✅ |
+| Data is always encrypted | | | ✅ |
+| Manageable via exit points | ✅ | ✅ | ✅ |
+| Enhanced CCSID support | ✅ | | ✅ |
+| Runs in watsonx.ai notebooks | | | ✅ |
+| Runs in lightweight containers | ✅ | | ✅ |
+| Multiple client languages | | | ✅ |
+
+#### Connect AI in two steps
+
+<Steps>
+
+1. **On IBM i, once per system:**
+
+    ```bash
+    # Install from the IBM i open source RPMs
+    yum install mapepire-server service-commander
+
+    # Start once; it keeps running
+    sc start mapepire
+
+    # Port 8076 by default, always encrypted
+    # Access rules: /QOpenSys/etc/mapepire/iprules.conf
+    ```
+
+2. **In your AI workload (Python):**
+
+    ```bash
+    pip install mapepire-python
+    ```
+
+    ```python
+    from mapepire_python import connect
+
+    creds = {"host": "myibmi", "port": 8076,
+             "user": "AIUSER", "password": "…"}
+
+    with connect(creds) as conn:
+        with conn.execute("select * from sample.employee") as cur:
+            print(cur.fetchall())
+    ```
+
+</Steps>
+
+Mapepire connections are governed by the same exit points as JDBC apps, support allow and deny rules by user and IP address, and accept credentials from `.ini` files, environment variables, or Kerberos. See [Accessing Db2 from Python](../../../integrations/access_db2/python) for more examples.
+
+## Putting it together
+
+The components combine into one end-to-end flow:
+
+<Steps>
+
+1. **Launch** — AI Launchpad deploys and manages the workload, such as a RAG assistant.
+2. **Send** — the Db2 SDK sends IBM i data to the workload from SQL or RPG.
+3. **Reason** — the workload answers, classifies, or acts on the request.
+4. **Look up** — Mapepire lets the workload query Db2 for i securely.
+
+</Steps>
+
+## Get started
+
+<CardGrid>
+  <LinkCard
+    title="AI Launchpad documentation"
+    href="https://ibm.biz/aiservices"
+    description="Installation, configuration, and the v0.3.x → v0.4.0 migration guide. Demo: ibm.biz/aiservicestechdemo"
+  />
+  <LinkCard
+    title="AI Launchpad v0.4.0 announcement"
+    href="https://ibm.biz/aiservicesblog"
+    description="What's new in v0.4.0. Code: github.com/IBM/project-ai-services"
+  />
+  <LinkCard
+    title="Db2 SDK"
+    href="https://ibm.github.io/AI-SDK-Db2-IBMi"
+    description="Usage and examples for each supported service."
+  />
+  <LinkCard
+    title="Mapepire"
+    href="https://mapepire-ibmi.github.io/"
+    description="Server setup and client guides."
+  />
+</CardGrid>
